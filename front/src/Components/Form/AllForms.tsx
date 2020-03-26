@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import Fade from 'react-reveal/Fade';
 import './Form.sass'
 
 
@@ -15,8 +16,8 @@ function AllForms(){
                 <span onClick={()=>handleClick(0)}>Log in</span>
                 <span onClick={()=>handleClick(1)}>Sign in</span>
             </div>
-            {!choose && <LoginForm/>}
-            {choose && <RegisterForm/>}
+            {!choose && <Fade left><LoginForm/></Fade>}
+            {!!choose && <Fade right><RegisterForm/></Fade>}
         </div>
     )
 }

@@ -1,12 +1,28 @@
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import './Form.sass'
+import Requests from "../../Requests";
+
 
 
 const RegisterForm = () => {
-    const { handleSubmit, register, errors } = useForm();
+    const { handleSubmit, register, errors ,reset} = useForm();
+    const [warning,setWarning] = useState('');
     const onSubmit = (values:string|any) => {
-        console.log(values);
+        Requests.create('/register',values)
+            .then((response)=>{
+                if(!!response.data.token){
+                    Requests.setToken(response.data.token);
+                    reset()
+                }
+            })
+            .catch((err:Error)=>{
+                setWarning('User already exist');
+                reset();
+                setTimeout(()=>{
+                    setWarning('')
+                },3000)
+            })
     };
 
     function inputForm(name:string,type?:boolean) {
@@ -19,7 +35,7 @@ const RegisterForm = () => {
                         required: 'Required',
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "invalid email address"
+                            message: "Invalid email address"
                         }
                     })}
                     type={name}
@@ -32,7 +48,10 @@ const RegisterForm = () => {
                 placeholder={name}
                 ref={register({
                     required: 'Required',
-                    minLength: 5
+                    pattern: {
+                        value: /^[A-Z0-9._%+-]{5}/i,
+                        message: `Too short ${name}`
+                    }
                 })}
                 type={name}
                 style = {errors[name] && {border:'2px solid red'}}
@@ -42,13 +61,14 @@ const RegisterForm = () => {
 
     return (
         <div>
-            <div>
-                Error
-            </div>
             <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
                 {inputForm('login')}
                 {inputForm('password')}
+                {inputForm('name')}
                 {inputForm('email')}
+                <div className='errors'>
+                    {warning}
+                </div>
                 <button type="submit">Sign in</button>
             </form>
         </div>

@@ -1,5 +1,5 @@
 $color: #ffbf26
-
+$err : #ff5e0e
 .main-form
   width: 100%
   display: flex
@@ -13,6 +13,14 @@ $color: #ffbf26
     flex-direction: column
     justify-content: center
     align-content: center
+    .errors
+      display: flex
+      justify-content: center
+      align-items: center
+      font-size: 18px
+      color: $err
+      height: 8px
+      margin-bottom: 5px
     input
       height: 30px
       border-radius: 5px
@@ -22,6 +30,7 @@ $color: #ffbf26
       padding-left: 8px
       font-size: 15px
     button
+      font-size: 16px
       background-color: $color
       border: 1px solid wheat
       border-radius: 10px
@@ -30,15 +39,13 @@ $color: #ffbf26
       width: 60%
       outline: none
       cursor: pointer
-    .errors
-      color: $color
   .spans
     width: 250px
     display: flex
     justify-content: space-around
     align-items: center
     height: 30px
-    margin-bottom: 15px
+    margin-bottom: 20px
     span
       font-size: 20px
       cursor: pointer
