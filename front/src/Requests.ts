@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosPromise} from 'axios'
+import axios, {AxiosInstance} from 'axios'
 
 class BasicRequests {
     private api:string = '/gd';
@@ -17,19 +17,19 @@ class BasicRequests {
         localStorage.setItem('accessToken',token);
     }
 
-    public create(url:string,body:object):AxiosPromise{
-        return this.instance.post(url,body);
+    public async create(url:string,body:object){
+        return await this.instance.post(url,body);
     }
-    public update(url:string,body:object):AxiosPromise<any>{
-        return this.instance.put(url,body)
-    }
-
-    public get(url:string):AxiosPromise<any>{
-        return this.instance.get(url)
+    public async update(url:string,body:object){
+        return await this.instance.put(url,body)
     }
 
-    public delete(url:string):AxiosPromise<any>{
-        return this.instance.delete(url)
+    public async get(url:string){
+        return await this.instance.get(url)
+    }
+
+    public async delete(url:string){
+        return await this.instance.delete(url)
     }
 }
 

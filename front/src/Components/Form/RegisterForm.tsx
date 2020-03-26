@@ -8,7 +8,7 @@ import Requests from "../../Requests";
 const RegisterForm = () => {
     const { handleSubmit, register, errors ,reset} = useForm();
     const [warning,setWarning] = useState('');
-    const onSubmit = (values:string|any) => {
+    const onSubmit = (values:object) => {
         Requests.create('/register',values)
             .then((response)=>{
                 if(!!response.data.token){

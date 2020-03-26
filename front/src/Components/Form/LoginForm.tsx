@@ -1,12 +1,34 @@
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import './Form.sass'
+import Requests from "../../Requests";
 
 
 const LoginForm = () => {
-    const { handleSubmit, register, errors } = useForm();
-    const onSubmit = (values:string|any) => {
-        console.log(values);
+    const { handleSubmit, register, errors , reset} = useForm();
+    const [warning,setWarning] = useState('');
+    const onSubmit = (values:object) => {
+        Requests.create('/login',values)
+            .then((response)=>{
+                if(!!response.data.accessToken){
+                    Requests.setToken(response.data.accessToken);
+                    reset();
+                    return
+                }
+                if(response.data.status === 'not found'){
+                    setWarning('Incorrect data');
+                    reset();
+                    setTimeout(()=>{
+                        setWarning('')
+                    },3000)
+                }
+                if(response.data.status === 'invalid password'){
+                    setWarning('Wrong password');
+                    setTimeout(()=>{
+                        setWarning('')
+                    },3000)
+                }
+            })
     };
 
     function inputForm(name:string) {
@@ -26,12 +48,12 @@ const LoginForm = () => {
 
     return (
         <div>
-            <div>
-                Error
-            </div>
             <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
                 {inputForm('login')}
                 {inputForm('password')}
+                <div className='errors'>
+                    {warning}
+                </div>
                 <button type="submit">Log in</button>
             </form>
         </div>
