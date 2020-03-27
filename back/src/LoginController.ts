@@ -8,16 +8,16 @@ class Auth{
         return hash.compareSync(password,hashPass);
     }
     public async CreateUser(login: string, password: string, name: string, email: string, response: Response) {
-        let date: Date = new Date(Date.now());
+        const date: Date = new Date(Date.now());
         await db.User.findOrCreate({
             where: {
-                login: login
+                login
             },
             defaults: {
-                login: login,
+                login,
                 password: hash.hashSync(password, hash.salt),
-                email: email,
-                name: name,
+                email,
+                name,
                 refreshToken: token.genRefreshToken(name),
                 expiredIn: new Date(date.setMonth(date.getMonth() + 2))
             }
@@ -42,7 +42,7 @@ class Auth{
     public async LogUser(login: string, password: string, response: Response) {
         await db.User.findOne({
             where: {
-                login: login
+                login
             }
         })
             .then(async (user: any) => {
@@ -54,10 +54,10 @@ class Auth{
                     response.send({status: 'invalid password'});
                     return;
                 }
-                let date: Date = new Date(Date.now());
-                let refreshToken:string = token.genRefreshToken(user.dataValues.name);
+                const date: Date = new Date(Date.now());
+                const refreshToken:string = token.genRefreshToken(user.dataValues.name);
                 await user.update({
-                    refreshToken:refreshToken,
+                    refreshToken,
                     expiredIn: new Date(date.setMonth(date.getMonth() + 2))
                 });
                 response.send({

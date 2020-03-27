@@ -9,11 +9,13 @@ const RegisterForm = () => {
     const { handleSubmit, register, errors ,reset} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:object) => {
-        Requests.create('/register',values)
+        Requests.logCreate('/register',values)
             .then((response)=>{
                 if(!!response.data.token){
                     Requests.setToken(response.data.token);
-                    reset()
+                    reset();
+                    window.location.href = '/main';
+                    return
                 }
             })
             .catch((err:Error)=>{

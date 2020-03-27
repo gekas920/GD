@@ -1,35 +1,40 @@
 import axios, {AxiosInstance} from 'axios'
 
 class BasicRequests {
-    private api:string = '/gd';
-    private instance: AxiosInstance;
+    private api:string = '/drive';
+    private readonly instance: AxiosInstance;
     constructor() {
         this.instance = axios.create({
             baseURL:'http://localhost:3000',
             timeout:1000,
             headers:{
-                'Authorization':''
+                'Authorization':localStorage.getItem('accessToken')
             }
         })
     }
 
     public setToken(token:string):void{
+        this.instance.defaults.headers.Authorization = token;
         localStorage.setItem('accessToken',token);
     }
 
-    public async create(url:string,body:object){
+    public async logCreate(url:string,body:object){
         return await this.instance.post(url,body);
     }
+    public async Create(url:string,body:object){
+        return await this.instance.post(this.api+url,body);
+    }
+
     public async update(url:string,body:object){
-        return await this.instance.put(url,body)
+        return await this.instance.put(this.api+url,body)
     }
 
     public async get(url:string){
-        return await this.instance.get(url)
+        return await this.instance.get(this.api+url)
     }
 
     public async delete(url:string){
-        return await this.instance.delete(url)
+        return await this.instance.delete(this.api+url)
     }
 }
 

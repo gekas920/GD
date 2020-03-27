@@ -8,11 +8,12 @@ const LoginForm = () => {
     const { handleSubmit, register, errors , reset} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:object) => {
-        Requests.create('/login',values)
+        Requests.logCreate('/login',values)
             .then((response)=>{
                 if(!!response.data.accessToken){
                     Requests.setToken(response.data.accessToken);
                     reset();
+                    window.location.href = '/main';
                     return
                 }
                 if(response.data.status === 'not found'){
