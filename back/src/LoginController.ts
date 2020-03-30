@@ -1,14 +1,17 @@
 const db = require('../models');
 const hash = require('../config/bcrypt_conf');
-import {Response} from "express";
+import {Request, Response} from "express";
 const token = require('./Tokens');
 
 class Auth{
     private static checkPass(password:string, hashPass:string){
         return hash.compareSync(password,hashPass);
     }
-    public async CreateUser(login: string, password: string, name: string, email: string, response: Response) {
-        const date: Date = new Date(Date.now());
+    public async CreateUser(request:Request, response: Response) {
+        const login:string = request.body.login;
+        const password:string = request.body.password;
+        const name: string = request.body.name;
+        const email:string = request.body.email;
         await db.User.findOrCreate({
             where: {
                 login
@@ -17,14 +20,15 @@ class Auth{
                 login,
                 password: hash.hashSync(password, hash.salt),
                 email,
-                name,
-                refreshToken: token.genRefreshToken(name),
-                expiredIn: new Date(date.setMonth(date.getMonth() + 2))
+                name
             }
         })
             .then(([user, created]: [any, boolean]) => {
                 if (created) {
-                    response.send({token: token.genAccessToken(user.dataValues.id, user.dataValues.refreshToken)});
+                    response.send({
+                        accessToken: token.genAccessToken(user.dataValues.id),
+                        refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
+                    });
                 } else {
                     response.status(409);
                     response.send({status: 'already exist'})
@@ -39,7 +43,9 @@ class Auth{
         // })
 
     }
-    public async LogUser(login: string, password: string, response: Response) {
+    public async LogUser(request:Request, response: Response) {
+        const login:string = request.body.login;
+        const password:string = request.body.password;
         await db.User.findOne({
             where: {
                 login
@@ -54,19 +60,24 @@ class Auth{
                     response.send({status: 'invalid password'});
                     return;
                 }
-                const date: Date = new Date(Date.now());
-                const refreshToken:string = token.genRefreshToken(user.dataValues.name);
-                await user.update({
-                    refreshToken,
-                    expiredIn: new Date(date.setMonth(date.getMonth() + 2))
-                });
                 response.send({
-                    accessToken:token.genAccessToken(user.dataValues.id,refreshToken)
+                    accessToken: token.genAccessToken(user.dataValues.id),
+                    refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
                 })
 
             })
     }
+    public newTokens(request:Request,response:Response){
+        const body = token.verifyToken(request.headers.authorization);
+        response.status(202);
+        response.send({
+            accessToken: token.genAccessToken(body.id),
+            refreshToken:token.genRefreshToken(body.id,body.data)
+        })
+    }
+
 }
+
 
 
 module.exports = new Auth();

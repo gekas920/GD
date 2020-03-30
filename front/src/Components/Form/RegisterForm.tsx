@@ -12,7 +12,8 @@ const RegisterForm = () => {
         Requests.logCreate('/register',values)
             .then((response)=>{
                 if(!!response.data.token){
-                    Requests.setToken(response.data.token);
+                    Requests.setAccessToken(response.data.accessToken);
+                    Requests.setRefreshToken(response.data.refreshToken);
                     reset();
                     window.location.href = '/main';
                     return

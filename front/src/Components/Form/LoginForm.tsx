@@ -11,7 +11,8 @@ const LoginForm = () => {
         Requests.logCreate('/login',values)
             .then((response)=>{
                 if(!!response.data.accessToken){
-                    Requests.setToken(response.data.accessToken);
+                    Requests.setAccessToken(response.data.accessToken);
+                    Requests.setRefreshToken(response.data.refreshToken);
                     reset();
                     window.location.href = '/main';
                     return

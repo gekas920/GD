@@ -5,7 +5,6 @@ class MainDrive extends React.Component{
     componentDidMount(): void {
         Requests.get('/data')
             .then((response)=>[
-                console.log(response)
             ])
     }
 

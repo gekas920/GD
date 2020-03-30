@@ -3,20 +3,36 @@ const token = require('./Tokens');
 const db = require('../models');
 
 
-async function checkToken(req:express.Request,res:express.Response,next:express.NextFunction) {
+
+async function checkAccessToken(req:express.Request,res:express.Response,next:express.NextFunction) {
     const accessToken:string | undefined = req.headers.authorization;
-    console.log('wqeqwd');
     try {
         token.verifyToken(accessToken);
         next()
     }
     catch (error) {
-        if (accessToken != null) {
-            const tokenBody = token.decodeToken(accessToken);
-            const user = await db.User.findByPk(tokenBody.id);
-            console.log(user.dataValues)
-        }
+        res.status(409);
+        res.send('invalid access token')
     }
 }
 
-module.exports = checkToken;
+async function checkRefreshToken(req:express.Request,res:express.Response,next:express.NextFunction) {
+    const refreshToken:string | undefined = req.headers.authorization;
+    try {
+        let body = token.verifyToken(refreshToken);
+        console.log(body.data);
+        console.log(req.headers["user-agent"]);
+        if(body.data !== req.headers["user-agent"]){
+            res.status(401);
+            res.send('Unauthorized')
+        }
+        next()
+    }
+    catch (error) {
+        res.status(401);
+        res.send('Unauthorized')
+    }
+}
+
+module.exports.checkAccessToken = checkAccessToken;
+module.exports.checkRefreshToken = checkRefreshToken;
