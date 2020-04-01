@@ -11,7 +11,7 @@ const RegisterForm = () => {
     const onSubmit = (values:object) => {
         Requests.logCreate('/register',values)
             .then((response)=>{
-                if(!!response.data.token){
+                if(!!response.data.accessToken){
                     Requests.setAccessToken(response.data.accessToken);
                     Requests.setRefreshToken(response.data.refreshToken);
                     reset();

@@ -1,5 +1,6 @@
 import React from "react";
 import Requests from "../../Requests";
+import MyDropzone from "./DropZone";
 
 class MainDrive extends React.Component{
     componentDidMount(): void {
@@ -10,8 +11,8 @@ class MainDrive extends React.Component{
 
     render(){
         return(
-            <div>
-                2323
+            <div className='drive-main'>
+                <MyDropzone/>
             </div>
         )
     }

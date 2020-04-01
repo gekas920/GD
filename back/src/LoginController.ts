@@ -2,6 +2,7 @@ const db = require('../models');
 const hash = require('../config/bcrypt_conf');
 import {Request, Response} from "express";
 const token = require('./Tokens');
+const fs = require('fs');
 
 class Auth{
     private static checkPass(password:string, hashPass:string){
@@ -25,12 +26,12 @@ class Auth{
         })
             .then(([user, created]: [any, boolean]) => {
                 if (created) {
+                    fs.mkdirSync(__dirname + `/../UsersFiles/${user.dataValues.id}`);
                     response.send({
                         accessToken: token.genAccessToken(user.dataValues.id),
                         refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
                     });
                 } else {
-                    response.status(409);
                     response.send({status: 'already exist'})
                 }
             })
@@ -69,7 +70,6 @@ class Auth{
     }
     public newTokens(request:Request,response:Response){
         const body = token.verifyToken(request.headers.authorization);
-        response.status(202);
         response.send({
             accessToken: token.genAccessToken(body.id),
             refreshToken:token.genRefreshToken(body.id,body.data)

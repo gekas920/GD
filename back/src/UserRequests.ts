@@ -1,10 +1,9 @@
 const web = require('./App');
 import express from 'express';
-const token = require('./Tokens');
 const Auth = require('./LoginController');
 const drive:string = '/drive';
 const middleware = require('./Middleware');
-
+const Files = require('./FilesController');
 
 web.app.use('/drive',(req:express.Request,res:express.Response,next:express.NextFunction)=>{
     middleware.checkAccessToken(req,res,next)
@@ -28,4 +27,8 @@ web.app.get(drive + '/data',(req:express.Request,res:express.Response)=>{
 
 web.app.get('/drive-check',(req:express.Request,res:express.Response)=>{
     Auth.newTokens(req,res);
+});
+
+web.app.post(drive + '/upload',(req:express.Request,res:express.Response)=>{
+    Files.uploadFile(req,res);
 });

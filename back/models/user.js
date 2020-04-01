@@ -7,7 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasMany(models.File,{
+      foreignKey:'user_id'
+    })
   };
   return User;
 };

@@ -7,15 +7,15 @@ class BasicRequests {
         this.instance = axios.create({
             baseURL:'http://localhost:3000',
             timeout:1000,
-            headers:{
-                'Authorization':localStorage.getItem('accessToken')
+            headers: {
+                Authorization: {
+                    toString () {
+                        return `${localStorage.getItem('accessToken')}`
+                    }
+                }
             }
         });
         this.instance.interceptors.response.use((res)=>{
-            if(res.status === 202){
-                localStorage.setItem('accessToken',res.data.accessToken);
-                localStorage.setItem('refreshToken',res.data.refreshToken);
-            }
             return res
         },(error:AxiosError) => {
             switch (error.response?.status) {
@@ -25,7 +25,14 @@ class BasicRequests {
                             {
                                 'Authorization':localStorage.getItem('refreshToken')
                             }
-                    });
+                    })
+                        .then(res=>{
+                            console.log(res);
+                            localStorage.setItem('accessToken',res.data.accessToken);
+                            localStorage.setItem('refreshToken',res.data.refreshToken);
+
+
+                        });
                     break;
                 case 401:
                     localStorage.clear();
@@ -46,7 +53,7 @@ class BasicRequests {
     public async logCreate(url:string,body:object){
         return await this.instance.post(url,body);
     }
-    public async create(url:string,body:object){
+    public async create(url:string,body:object,options?){
         return await this.instance.post(this.api+url,body);
     }
 
