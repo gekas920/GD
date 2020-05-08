@@ -8,6 +8,7 @@ const LoginForm = () => {
     const { handleSubmit, register, errors , reset} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:object) => {
+        console.log(values);
         Requests.logCreate('/login',values)
             .then((response)=>{
                 if(!!response.data.accessToken){

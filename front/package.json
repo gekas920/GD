@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.13",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -21,6 +22,8 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^10.2.2",
     "react-hook-form": "^5.1.1",
+    "react-pdf": "^4.1.0",
+    "react-read-pdf": "^2.0.9",
     "react-reveal": "^1.2.2",
     "react-router": "^5.1.2",
     "react-scripts": "3.4.0",

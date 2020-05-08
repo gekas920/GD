@@ -9,6 +9,7 @@ app.use(cors());
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended:false,limit: '50mb'}));
 app.use(fileUpload());
+app.use('/files',express.static(__dirname + '/../UsersFiles'));
 
 db.sequelize.sync().then(()=>{
     console.log('Connected')

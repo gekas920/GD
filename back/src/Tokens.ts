@@ -3,16 +3,17 @@ const jwt = require('jsonwebtoken');
 
 class Tokens{
     private secret:string = 'Some_secret_string';
-    public genAccessToken(id:string):string{
+    public genAccessToken(id:string,isAdmin:boolean):string{
         return jwt.sign({
             id,
+            isAdmin
         }, this.secret, {expiresIn: '5m'})
     }
 
-    public genRefreshToken(id:string,userAgent:string):string{
+    public genRefreshToken(id: string, userAgent: string | undefined):string{
         return jwt.sign({
             id:id,
-            data:userAgent
+            userAgent
         }, this.secret,{expiresIn:'60d'})
     }
 

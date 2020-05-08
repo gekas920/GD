@@ -53,6 +53,14 @@ class BasicRequests {
     public async logCreate(url:string,body:object){
         return await this.instance.post(url,body);
     }
+    public async uploadAvatar(url:string,body:object) {
+        return await this.instance.post(url, body,
+            {
+                headers:{
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+    }
     public async create(url:string,body:object,options?){
         return await this.instance.post(this.api+url,body);
     }

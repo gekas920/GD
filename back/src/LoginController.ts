@@ -1,8 +1,12 @@
 const db = require('../models');
 const hash = require('../config/bcrypt_conf');
 import {Request, Response} from "express";
+import {FileArray} from "express-fileupload";
+const md5 = require('md5');
 const token = require('./Tokens');
 const fs = require('fs');
+const path = require('path');
+
 
 class Auth{
     private static checkPass(password:string, hashPass:string){
@@ -28,7 +32,8 @@ class Auth{
                 if (created) {
                     fs.mkdirSync(__dirname + `/../UsersFiles/${user.dataValues.id}`);
                     response.send({
-                        accessToken: token.genAccessToken(user.dataValues.id),
+                        id:user.dataValues.id,
+                        accessToken: token.genAccessToken(user.dataValues.id,false),
                         refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
                     });
                 } else {
@@ -62,7 +67,7 @@ class Auth{
                     return;
                 }
                 response.send({
-                    accessToken: token.genAccessToken(user.dataValues.id),
+                    accessToken: token.genAccessToken(user.dataValues.id,user.dataValues.admin),
                     refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
                 })
 
@@ -71,7 +76,7 @@ class Auth{
     public newTokens(request:Request,response:Response){
         const body = token.verifyToken(request.headers.authorization);
         response.send({
-            accessToken: token.genAccessToken(body.id),
+            accessToken: token.genAccessToken(body.id,body.isAdmin),
             refreshToken:token.genRefreshToken(body.id,body.data)
         })
     }

@@ -17,18 +17,14 @@ web.app.post('/register',(req:express.Request,res:express.Response)=>{
     Auth.CreateUser(req,res);
 });
 
+web.app.post('/avatar/:id',(req:express.Request,res:express.Response)=>{
+   Files.uploadFile(req,res)
+});
+
 web.app.post('/login',(req:express.Request,res:express.Response)=>{
    Auth.LogUser(req,res)
 });
 
-web.app.get(drive + '/data',(req:express.Request,res:express.Response)=>{
-    res.send('ok');
-});
-
 web.app.get('/drive-check',(req:express.Request,res:express.Response)=>{
     Auth.newTokens(req,res);
-});
-
-web.app.post(drive + '/upload',(req:express.Request,res:express.Response)=>{
-    Files.uploadFile(req,res);
 });
