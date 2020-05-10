@@ -16,27 +16,26 @@ class BasicRequests {
             }
         });
         this.instance.interceptors.response.use((res)=>{
+            if(res.status === 203){
+                this.get('-check',{
+                    headers:
+                        {
+                            'Authorization':localStorage.getItem('refreshToken')
+                        }
+                })
+                    .then(res=>{
+                        console.log(res);
+                        localStorage.setItem('accessToken',res.data.accessToken);
+                        localStorage.setItem('refreshToken',res.data.refreshToken);
+
+
+                    });
+            }
             return res
         },(error:AxiosError) => {
-            switch (error.response?.status) {
-                case 409:
-                    this.get('-check',{
-                        headers:
-                            {
-                                'Authorization':localStorage.getItem('refreshToken')
-                            }
-                    })
-                        .then(res=>{
-                            console.log(res);
-                            localStorage.setItem('accessToken',res.data.accessToken);
-                            localStorage.setItem('refreshToken',res.data.refreshToken);
-
-
-                        });
-                    break;
-                case 401:
-                    localStorage.clear();
-                    window.location.href = '/'
+            if (error.response?.status === 401) {
+                localStorage.clear();
+                window.location.href = '/'
             }
         });
     }

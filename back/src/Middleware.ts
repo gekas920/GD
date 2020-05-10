@@ -8,15 +8,27 @@ async function checkAccessToken(req:express.Request,res:express.Response,next:ex
     const accessToken:string | undefined = req.headers.authorization;
     try {
         let body = token.verifyToken(accessToken);
-        res.locals.user_id = body.id;
-        next()
+        if(body){
+            res.locals.user_id = body.id;
+            next()
+        }
+        else{
+            res.status(401);
+            res.send('Unauthorized');
+        }
     }
     catch (error) {
-        console.log(error);
         let body = token.decodeToken(accessToken);
-        res.locals.user_id = body.id;
-        res.status(409);
-        next()
+        if(body){
+            res.locals.user_id = body.id;
+            res.status(203);
+            next()
+        }
+        else {
+            res.status(401);
+            res.send('Unauthorized')
+        }
+
     }
 }
 
@@ -24,13 +36,7 @@ async function checkRefreshToken(req:express.Request,res:express.Response,next:e
     const refreshToken:string | undefined = req.headers.authorization;
     try {
         let body = token.verifyToken(refreshToken);
-        console.log(body.data);
-        console.log(req.headers["user-agent"]);
         res.locals.user_id = body.id;
-        if(body.data !== req.headers["user-agent"]){
-            res.status(401);
-            res.send('Unauthorized')
-        }
         next()
     }
     catch (error) {

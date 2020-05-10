@@ -20,8 +20,8 @@ const RegisterForm = () => {
                     Requests.uploadAvatar(`/avatar/${response.data.id}`,formData);
                     Requests.setAccessToken(response.data.accessToken);
                     Requests.setRefreshToken(response.data.refreshToken);
-                    // reset();
-                    // window.location.href = '/main';
+                    reset();
+                    window.location.href = '/main/polls';
                     return
                 }
             })
@@ -76,11 +76,7 @@ const RegisterForm = () => {
                         name={name}
                         placeholder={name}
                         ref={register({
-                            required: 'Required',
-                            pattern: {
-                                value: /^[0-9]/i,
-                                message: "Invalid date"
-                            }
+                            required: 'Required'
                         })}
                         type='date'
                         style = {errors[name] && {border:'2px solid red'}}

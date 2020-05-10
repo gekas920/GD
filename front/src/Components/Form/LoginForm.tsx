@@ -15,7 +15,7 @@ const LoginForm = () => {
                     Requests.setAccessToken(response.data.accessToken);
                     Requests.setRefreshToken(response.data.refreshToken);
                     reset();
-                    window.location.href = '/main';
+                    window.location.href = '/main/polls';
                     return
                 }
                 if(response.data.status === 'not found'){

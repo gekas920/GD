@@ -2,27 +2,33 @@ import React from "react";
 import {Route,Router,Redirect} from "react-router";
 import {createBrowserHistory} from "history";
 import AllForms from "./Form/AllForms";
-import MainDrive from "./Drive/MainDrive";
+import NavBar from "./Navbar/Navbar";
+import Profile from "./Profile/Profile";
+import {Provider} from "react-redux";
+import {store} from "../Store/Store";
 
 const history = createBrowserHistory();
 
 function Routes() {
     return(
-        <Router history={history}>
-            <Route path = '/' render={() => (
-                !!localStorage.getItem('refreshToken') ? (
-                    <Redirect to="/main"/>
-                    ) : (
-                        <Redirect to="/"/>
-                        )
-            )}/>
-            <Route exact path = '/'>
-                <AllForms/>
-            </Route>
-            <Route exact path = '/main'>
-                <MainDrive/>
-            </Route>
-        </Router>
+        <Provider store={store}>
+            <Router history={history}>
+                {/*<Route path = '/' render={() => (*/}
+                {/*    localStorage.getItem('refreshToken') ? (*/}
+                {/*        <Redirect to="/main/polls"/>*/}
+                {/*    ) : (*/}
+                {/*        <Redirect to="/"/>*/}
+                {/*    )*/}
+                {/*)}/>*/}
+                <Route exact path = '/'>
+                    <AllForms/>
+                </Route>
+                <Route path = '/main'>
+                    <NavBar/>
+                    <Route exact path = '/main/profile' component = {Profile}/>
+                </Route>
+            </Router>
+        </Provider>
     )
 }
 

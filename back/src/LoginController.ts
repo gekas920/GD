@@ -1,11 +1,8 @@
 const db = require('../models');
 const hash = require('../config/bcrypt_conf');
 import {Request, Response} from "express";
-import {FileArray} from "express-fileupload";
-const md5 = require('md5');
 const token = require('./Tokens');
 const fs = require('fs');
-const path = require('path');
 
 
 class Auth{
@@ -15,8 +12,10 @@ class Auth{
     public async CreateUser(request:Request, response: Response) {
         const login:string = request.body.login;
         const password:string = request.body.password;
-        const name: string = request.body.name;
         const email:string = request.body.email;
+        const date:Date = request.body.date;
+        const about:string = request.body.about;
+        const initials:string = request.body.initials;
         await db.User.findOrCreate({
             where: {
                 login
@@ -25,7 +24,10 @@ class Auth{
                 login,
                 password: hash.hashSync(password, hash.salt),
                 email,
-                name
+                date:date,
+                about:about,
+                initials:initials,
+                admin:false
             }
         })
             .then(([user, created]: [any, boolean]) => {
