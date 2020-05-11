@@ -6,12 +6,14 @@ import NavBar from "./Navbar/Navbar";
 import Profile from "./Profile/Profile";
 import {Provider} from "react-redux";
 import {store} from "../Store/Store";
+import Snack from "./Snack/Snack";
 
 const history = createBrowserHistory();
 
 function Routes() {
     return(
         <Provider store={store}>
+            <Snack/>
             <Router history={history}>
                 {/*<Route path = '/' render={() => (*/}
                 {/*    localStorage.getItem('refreshToken') ? (*/}
@@ -25,7 +27,7 @@ function Routes() {
                 </Route>
                 <Route path = '/main'>
                     <NavBar/>
-                    <Route exact path = '/main/profile' component = {Profile}/>
+                    <Route exact path = '/main/profile' component={() => <Profile url = '/profile'/>}/>
                 </Route>
             </Router>
         </Provider>

@@ -27,7 +27,7 @@ function Snack(props) {
         setTimeout(()=>{
             props.HideSnack();
         },6000)
-    },[props.showSnack]);
+    },[props]);
 
     const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
         if (reason === 'clickaway') {
@@ -38,8 +38,10 @@ function Snack(props) {
     };
 
     return (
-        <div className={classes.root}>
-            <Snackbar open={open} onClose={handleClose} anchorOrigin={{
+        <div className={classes.root} style={{position:'absolute'}}>
+            <Snackbar open={open} onClose={handleClose}
+                      autoHideDuration={3000}
+                      anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
             }}>

@@ -5,10 +5,10 @@ const token = require('./Tokens');
 const fs = require('fs');
 
 class ProfileController{
-    public async get(request:Request, response: Response){
+    public async get(request: Request, response: Response, id?: string){
         db.User.findOne({
             where:{
-                id:response.locals.user_id
+                id: id || response.locals.user_id
             }
         })
             .then((result:any)=>{
@@ -27,10 +27,10 @@ class ProfileController{
                 });
             });
     }
-    public async update(request:Request,response:Response){
+    public async update(request:Request,response:Response,id?: string){
         db.User.findOne({
             where:{
-                id:response.locals.user_id
+                id:id || response.locals.user_id
             }
         })
             .then((result:any)=>{
@@ -39,6 +39,58 @@ class ProfileController{
                     initials:request.body.initials,
                     date:request.body.date,
                     about:request.body.about,
+                }).then((result:any)=>{
+                    response.send('Ok')
+                })
+                    .catch(()=>{
+                        response.send(500);
+                    })
+            })
+    }
+
+    public async delete(request:Request,response:Response,id: string){
+        db.User.findOne({
+            where:{
+                id:id
+            }
+        })
+            .then((result:any)=>{
+                result.destroy().then((result:any)=>{
+                    response.send('Ok')
+                })
+                    .catch(()=>{
+                        response.send(500);
+                    })
+            })
+    }
+
+    public async deleteTemporarily(request:Request,response:Response,id: string){
+        db.User.findOne({
+            where:{
+                id:id
+            }
+        })
+            .then((result:any)=>{
+                result.update({
+                    deleted:true
+                }).then((result:any)=>{
+                    response.send('Ok')
+                })
+                    .catch(()=>{
+                        response.send(500);
+                    })
+            })
+    }
+
+    public async back(request:Request,response:Response,id: string){
+        db.User.findOne({
+            where:{
+                id:id
+            }
+        })
+            .then((result:any)=>{
+                result.update({
+                    deleted:false
                 }).then((result:any)=>{
                     response.send('Ok')
                 })

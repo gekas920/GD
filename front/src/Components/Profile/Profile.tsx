@@ -4,12 +4,13 @@ import '../Form/Form.sass'
 import Requests from "../../Requests";
 import {mapDispatchToProps, mapStateToProps, userData} from "./indexProfile";
 import {connect} from "react-redux";
-import Snack from "../Snack/Snack";
 import './Profile.sass'
 import ArrowIcon from '@material-ui/icons/ArrowForward';
 import ArrowIconBack from '@material-ui/icons/ArrowBack';
 import Users from "./Users/UsersList";
-
+import DeleteForever from '@material-ui/icons/DeleteForever'
+import DeleteIcon from '@material-ui/icons/Delete'
+import Replay from '@material-ui/icons/Replay'
 
 const Profile = (props) => {
     const { handleSubmit, register, errors} = useForm();
@@ -25,11 +26,20 @@ const Profile = (props) => {
         showBlock(prevState => !prevState);
     };
     const onSubmit = (values:Record<string, userData>) => {
-        Requests.update('/profile',values)
+        Requests.update(props.url,values)
             .then((response)=>{
                 if(response){
                     props.ShowSnack();
                 }
+            })
+    };
+
+    const goBack = ()=>{
+        let id = props.url.split('/')[2];
+        Requests.update(`/profile/back/${id}`)
+            .then((response)=>{
+                if(response)
+                    props.ShowSnack();
             })
     };
 
@@ -38,14 +48,33 @@ const Profile = (props) => {
       window.location.href = '/'
     };
 
+    const deleteVariables = (variable:boolean)=>{
+        let id = props.url.split('/')[2];
+        if(variable){
+            Requests.delete(`/profile/forever/${id}`)
+                .then((response)=>{
+                    if(response){
+                        props.ShowSnack();
+                    }
+                })
+        }
+        else {
+            Requests.delete(`/profile/delete/${id}`)
+                .then((response)=>{
+                    if(response){
+                        props.ShowSnack();
+                    }
+                });
+        }
+    };
 
     useEffect(()=>{
-       Requests.get('/profile')
+       Requests.get(props.url)
            .then(result=>{
                result.data.date = result.data.date.split('T')[0];
                updateData(result.data);
            })
-    },[]);
+    },[props.url]);
 
     function inputForm(name:string) {
         switch (name) {
@@ -100,13 +129,16 @@ const Profile = (props) => {
     }
     return (
         <div>
-            <div>
-                <button className='back-btn' onClick={showElem}>
-                    {!show && <ArrowIcon/>}
-                    {show && <ArrowIconBack/>}
-                </button>
-                {show && <Users/>}
-            </div>
+            {
+                props.url === '/profile' &&
+                <div>
+                    <button className='back-btn' onClick={showElem}>
+                        {!show && <ArrowIcon/>}
+                        {show && <ArrowIconBack/>}
+                    </button>
+                    {show && <Users/>}
+                </div>
+            }
         <div className='main-form'>
             <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
                 <img src={data.img} style={{maxWidth:'300px',marginBottom:'10px'}} alt='avatar'/>
@@ -115,9 +147,17 @@ const Profile = (props) => {
                 {inputForm('date')}
                 {inputForm('about')}
                 <button type="submit">Confirm changes</button>
-                <button onClick={handleClick}>Log out</button>
+                {props.url === '/profile' && <button onClick={handleClick}>Log out</button>}
             </form>
-            <Snack/>
+            {props.url !== '/profile' &&
+                <div>
+                    <div className='delete-block'>
+                        <button className='delete-button' onClick={()=>deleteVariables(true)}><DeleteForever/></button>
+                        <button className='delete-button' onClick={()=>deleteVariables(false)}><DeleteIcon/></button>
+                    </div>
+                    <button className='remove-button' onClick={goBack}><Replay/></button>
+                </div>
+            }
         </div>
         </div>
     );

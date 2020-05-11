@@ -3,6 +3,6 @@ import {snackReducer} from "./Reducers";
 
 export const store = createStore(snackReducer);
 
-// store.subscribe(()=>{
-//      console.log(store.getState())
-//  });
+store.subscribe(()=>{
+     console.log(store.getState())
+ });

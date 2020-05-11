@@ -11,11 +11,13 @@ class UserController {
             .then((result:any[])=>{
                 let arr = result.map(elem=>{
                     return {
+                        id:elem.dataValues.id,
                         email:elem.dataValues.email,
                         initials:elem.dataValues.initials,
                         date:elem.dataValues.date,
                         about:elem.dataValues.about,
-                        admin:elem.dataValues.admin
+                        admin:elem.dataValues.admin,
+                        deleted:elem.dataValues.deleted
                     }
                 });
                 response.send(arr)
