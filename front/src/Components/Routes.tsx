@@ -15,13 +15,13 @@ function Routes() {
         <Provider store={store}>
             <Snack/>
             <Router history={history}>
-                {/*<Route path = '/' render={() => (*/}
-                {/*    localStorage.getItem('refreshToken') ? (*/}
-                {/*        <Redirect to="/main/polls"/>*/}
-                {/*    ) : (*/}
-                {/*        <Redirect to="/"/>*/}
-                {/*    )*/}
-                {/*)}/>*/}
+                <Route path = '/' render={() => (
+                    localStorage.getItem('refreshToken') ? (
+                        <Redirect to={window.location.pathname !== '/' ? window.location.pathname : '/main/polls'}/>
+                    ) : (
+                        <Redirect to="/"/>
+                    )
+                )}/>
                 <Route exact path = '/'>
                     <AllForms/>
                 </Route>

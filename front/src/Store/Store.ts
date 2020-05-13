@@ -1,4 +1,4 @@
-import {createStore} from 'redux'
+import {createStore,combineReducers} from 'redux'
 import {snackReducer} from "./Reducers";
 
 export const store = createStore(snackReducer);

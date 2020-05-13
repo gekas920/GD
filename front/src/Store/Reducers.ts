@@ -1,7 +1,8 @@
 import {Action, AppState} from "./Types";
 
 export const appState:AppState = {
-    showSnack:false
+    showSnack:false,
+    admin:false
 };
 
 export function snackReducer(state = appState, action:Action) {
@@ -15,6 +16,16 @@ export function snackReducer(state = appState, action:Action) {
         return {
             ...state,
             showSnack: false
+        }
+    }
+    return state
+}
+
+export function setAdmin(state = appState, action:Action) {
+    if(action.type === 'SET_ADMIN'){
+        return {
+            ...state,
+            admin:true
         }
     }
     return state

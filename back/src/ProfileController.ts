@@ -12,19 +12,32 @@ class ProfileController{
             }
         })
             .then((result:any)=>{
-                let fileName = '';
-                fs.readdir(__dirname + `/../UsersFiles/${result.dataValues.id}`, (err:Error, files:[]) => {
-                    files.forEach((file) => {
-                        fileName = file;
+                if(!result.dataValues.admin){
+                    let fileName = '';
+                    fs.readdir(__dirname + `/../UsersFiles/${result.dataValues.id}`, (err:Error, files:[]) => {
+                        files.forEach((file) => {
+                            fileName = file;
+                        });
+                        response.send({
+                            email:result.dataValues.email,
+                            initials:result.dataValues.initials,
+                            date:result.dataValues.date,
+                            about:result.dataValues.about,
+                            img:`http://localhost:3000/files/${result.dataValues.id}/${fileName}`,
+                            admin:result.dataValues.admin
+                        }).end()
                     });
+                }
+                else {
                     response.send({
                         email:result.dataValues.email,
                         initials:result.dataValues.initials,
                         date:result.dataValues.date,
                         about:result.dataValues.about,
-                        img:`http://localhost:3000/files/${result.dataValues.id}/${fileName}`
+                        img:'',
+                        admin:result.dataValues.admin
                     }).end()
-                });
+                }
             });
     }
     public async update(request:Request,response:Response,id?: string){

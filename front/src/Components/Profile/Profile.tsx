@@ -13,13 +13,15 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Replay from '@material-ui/icons/Replay'
 
 const Profile = (props) => {
+    console.log(props);
     const { handleSubmit, register, errors} = useForm();
     const [data,updateData] = useState({
         email:'',
         date:'',
         initials:'',
         about:'',
-        img:''
+        img:'',
+        admin:false
     });
     const [show,showBlock] = useState(false);
     const showElem = ()=>{
@@ -152,10 +154,22 @@ const Profile = (props) => {
             {props.url !== '/profile' &&
                 <div>
                     <div className='delete-block'>
-                        <button className='delete-button' onClick={()=>deleteVariables(true)}><DeleteForever/></button>
-                        <button className='delete-button' onClick={()=>deleteVariables(false)}><DeleteIcon/></button>
+                        <button className='delete-button'
+                                disabled = {data.admin}
+                                onClick={()=>deleteVariables(true)}>
+                            <DeleteForever/>
+                        </button>
+                        <button className='delete-button'
+                                disabled = {data.admin}
+                                onClick={()=>deleteVariables(false)}>
+                            <DeleteIcon/>
+                        </button>
                     </div>
-                    <button className='remove-button' onClick={goBack}><Replay/></button>
+                    <button className='remove-button'
+                            disabled = {data.admin}
+                            onClick={goBack}>
+                        <Replay/>
+                    </button>
                 </div>
             }
         </div>

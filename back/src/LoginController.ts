@@ -36,7 +36,8 @@ class Auth{
                     response.send({
                         id:user.dataValues.id,
                         accessToken: token.genAccessToken(user.dataValues.id,false),
-                        refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
+                        refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"]),
+                        admin:user.dataValues.admin
                     });
                 } else {
                     response.send({status: 'already exist'})
@@ -54,6 +55,7 @@ class Auth{
     public async LogUser(request:Request, response: Response) {
         const login:string = request.body.login;
         const password:string = request.body.password;
+        console.log(hash.hashSync('admin', hash.salt));
         await db.User.findOne({
             where: {
                 login
@@ -70,7 +72,8 @@ class Auth{
                 }
                 response.send({
                     accessToken: token.genAccessToken(user.dataValues.id,user.dataValues.admin),
-                    refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"])
+                    refreshToken:token.genRefreshToken(user.dataValues.id,request.headers["user-agent"]),
+                    admin:user.dataValues.admin
                 })
 
             })

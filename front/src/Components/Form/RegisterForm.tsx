@@ -4,8 +4,7 @@ import './Form.sass'
 import Requests from "../../Requests";
 
 
-
-const RegisterForm = () => {
+const RegisterForm = (props) => {
     const { handleSubmit, register, errors ,reset,watch} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:any) => {
