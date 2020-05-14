@@ -4,6 +4,12 @@ const bodyParser = require('body-parser');
 const app: express.Application = express();
 const db = require('../models');
 const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const dir = './UsersFiles';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 
 app.use(cors());
 app.use(bodyParser.json({limit: '50mb'}));

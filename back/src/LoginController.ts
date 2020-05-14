@@ -27,7 +27,8 @@ class Auth{
                 date:date,
                 about:about,
                 initials:initials,
-                admin:false
+                admin:false,
+                deleted:false
             }
         })
             .then(([user, created]: [any, boolean]) => {
@@ -62,7 +63,7 @@ class Auth{
             }
         })
             .then(async (user: any) => {
-                if (!user) {
+                if (!user || user.dataValues.deleted) {
                     response.send({status: 'not found'});
                     return
                 }

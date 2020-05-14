@@ -29,6 +29,9 @@ module.exports = {
       admin: {
         type: Sequelize.BOOLEAN
       },
+      deleted: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

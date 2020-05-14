@@ -10,6 +10,7 @@ module.exports = {
       about:'SUPER PUPER ADMIN THE BEST',
       initials:'Putin Vladimir Vladimirovich',
       admin:true,
+      deleted:false,
       createdAt: new Date(),
       updatedAt: new Date()
     }]);
