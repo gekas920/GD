@@ -1,7 +1,11 @@
 import {createStore,combineReducers} from 'redux'
-import {snackReducer} from "./Reducers";
+import {setAdmin, setPoll, snackReducer} from "./Reducers";
 
-export const store = createStore(snackReducer);
+export const store = createStore(
+    combineReducers({
+        snackReducer,setAdmin,setPoll
+    })
+);
 
 store.subscribe(()=>{
      console.log(store.getState())

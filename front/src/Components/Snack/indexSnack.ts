@@ -1,6 +1,5 @@
-import {AppState} from "../../Store/Types";
 
-export const mapStateToProps = (state : AppState) => state;
+export const mapStateToProps = (state) => state.snackReducer;
 export const mapDispatchToProps = (dispatch)=> ({
     HideSnack:()=>{
         dispatch({

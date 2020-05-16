@@ -25,7 +25,7 @@ class NavBar extends React.Component
                             <li><Link to='/main/polls' className='navbar--elem'
                                       onClick={this.handleClick}>Main</Link></li>
                             <li><Link to='/main/my' className='navbar--elem'
-                                      onClick={this.handleClick}>My Tasks</Link></li>
+                                      onClick={this.handleClick}>My Polls</Link></li>
                             <li><Link to='/main/profile' className='navbar--elem'
                                       onClick={this.handleClick}>Profile</Link></li>
                         </ul>

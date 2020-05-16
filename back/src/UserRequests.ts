@@ -6,6 +6,7 @@ const middleware = require('./Middleware');
 const Files = require('./FilesController');
 const ProfileController = require('./ProfileController');
 const UserController = require('./UserController');
+const PollsController = require('./PollsController');
 
 web.app.use('/drive',(req:express.Request,res:express.Response,next:express.NextFunction)=>{
     middleware.checkAccessToken(req,res,next)
@@ -61,4 +62,8 @@ web.app.delete(drive+'/profile/forever/:id',(req:express.Request,res:express.Res
 
 web.app.put(drive+'/profile/back/:id',(req:express.Request,res:express.Response)=>{
     ProfileController.back(req,res,req.params.id)
+});
+
+web.app.get(drive+'/polls',(req:express.Request,res:express.Response)=>{
+    PollsController.get(req,res);
 });

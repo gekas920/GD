@@ -1,0 +1,45 @@
+.main
+  margin: 0 auto
+  height: 90vh
+  width: 80%
+  display: flex
+  flex-wrap: wrap
+  padding-top: 15px
+  overflow-y: scroll
+
+  .window
+    width: 200px
+    height: 200px
+    border: 1px solid white
+    color: white
+    border-radius: 15px
+    position: relative
+    cursor: pointer
+    margin: 10px
+    transition-duration: .3s
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    align-items: center
+    user-select: none
+    text-decoration: none
+    .window-description
+      font-size: 20px
+      width: 175px
+      text-overflow: ellipsis
+      overflow: hidden
+      display: block
+      text-align: center
+    .window-count
+      width: 175px
+      text-align: center
+      font-size: 50px
+      text-overflow: ellipsis
+      overflow: hidden
+  .window:hover
+    transform: scale(1.1)
+    background-color: #ff9517
+    transition-duration: .25s
+    transition-delay: .25s
+
+

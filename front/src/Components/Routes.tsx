@@ -4,15 +4,18 @@ import {createBrowserHistory} from "history";
 import AllForms from "./Form/AllForms";
 import NavBar from "./Navbar/Navbar";
 import Profile from "./Profile/Profile";
-import {Provider} from "react-redux";
-import {store} from "../Store/Store";
 import Snack from "./Snack/Snack";
+import Main from "./Main/Main";
+import {connect} from "react-redux";
+import {mapStateToProps} from "./indexRoutes";
+import Polls from "./Main/Poll/Poll";
 
 const history = createBrowserHistory();
 
-function Routes() {
+function Routes(props) {
+    console.log(props);
     return(
-        <Provider store={store}>
+        <div>
             <Snack/>
             <Router history={history}>
                 <Route path = '/' render={() => (
@@ -27,11 +30,13 @@ function Routes() {
                 </Route>
                 <Route path = '/main'>
                     <NavBar/>
+                    <Route exact path = '/main/polls' component = {Main}/>
                     <Route exact path = '/main/profile' component={() => <Profile url = '/profile'/>}/>
+                    <Route path = '/main/polls/:id' component = {Polls}/>
                 </Route>
             </Router>
-        </Provider>
+        </div>
     )
 }
 
-export default Routes
+export default connect(mapStateToProps)(Routes)

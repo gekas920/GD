@@ -13,7 +13,6 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Replay from '@material-ui/icons/Replay'
 
 const Profile = (props) => {
-    console.log(props);
     const { handleSubmit, register, errors} = useForm();
     const [data,updateData] = useState({
         email:'',
@@ -21,7 +20,7 @@ const Profile = (props) => {
         initials:'',
         about:'',
         img:'',
-        admin:false
+        admin:props.setAdmin.admin
     });
     const [show,showBlock] = useState(false);
     const showElem = ()=>{
@@ -132,7 +131,7 @@ const Profile = (props) => {
     return (
         <div>
             {
-                props.url === '/profile' &&
+                (props.url === '/profile' && data.admin) &&
                 <div>
                     <button className='back-btn' onClick={showElem}>
                         {!show && <ArrowIcon/>}
@@ -141,17 +140,17 @@ const Profile = (props) => {
                     {show && <Users/>}
                 </div>
             }
-        <div className='main-form'>
-            <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
-                <img src={data.img} style={{maxWidth:'300px',marginBottom:'10px'}} alt='avatar'/>
-                {inputForm('email')}
-                {inputForm('initials')}
-                {inputForm('date')}
-                {inputForm('about')}
-                <button type="submit">Confirm changes</button>
-                {props.url === '/profile' && <button onClick={handleClick}>Log out</button>}
-            </form>
-            {props.url !== '/profile' &&
+            <div className='main-form'>
+                <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
+                    <img src={data.img} style={{maxWidth:'300px',marginBottom:'10px'}} alt='avatar'/>
+                    {inputForm('email')}
+                    {inputForm('initials')}
+                    {inputForm('date')}
+                    {inputForm('about')}
+                    <button type="submit">Confirm changes</button>
+                    {props.url === '/profile' && <button onClick={handleClick}>Log out</button>}
+                </form>
+                {props.url !== '/profile' &&
                 <div>
                     <div className='delete-block'>
                         <button className='delete-button'
@@ -171,8 +170,8 @@ const Profile = (props) => {
                         <Replay/>
                     </button>
                 </div>
-            }
-        </div>
+                }
+            </div>
         </div>
     );
 };

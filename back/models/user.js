@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     deleted:DataTypes.BOOLEAN
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
   };
   return User;
 };
