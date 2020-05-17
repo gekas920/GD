@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import {FileArray} from "express-fileupload";
 const md5 = require('md5');
 const db = require('../models');
 const fs = require('fs');
@@ -21,13 +22,9 @@ class Files {
         response.send('ok')
     }
 
-    public sendFiles(request:Request,response:Response){
-       // '1a6edd73b1c0c541c05fd10130f222f3.pdf'
-        //fs.readdirSync(__dirname +  `/../UsersFiles/${response.locals.user_id}`)
-       let data = fs.readFileSync(__dirname +  `/../UsersFiles/${response.locals.user_id}/1a6edd73b1c0c541c05fd10130f222f3.pdf`,{
-           encoding:'utf8'
-       });
-       response.send(Buffer.from(data,'base64'))
+    public uploadPollFile(file:any,pollId:string | number){
+            let extension:string | undefined = file.name.split('.').pop();
+            file.mv(__dirname + `/../PollFiles/${pollId}/${md5(file.name)}.${extension}`)
     }
 }
 

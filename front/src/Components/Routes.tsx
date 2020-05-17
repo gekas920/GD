@@ -13,7 +13,6 @@ import Polls from "./Main/Poll/Poll";
 const history = createBrowserHistory();
 
 function Routes(props) {
-    console.log(props);
     return(
         <div>
             <Snack/>

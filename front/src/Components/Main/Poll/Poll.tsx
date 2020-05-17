@@ -1,10 +1,13 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import Poll from 'react-polls';
+import './Poll.sass'
+import PollCarousel from "./PollCarousel/Carousel";
+import '../../Profile/Profile.sass'
 
-// Declaring poll question and answers
 const pollQuestion = 'Is react-polls useful?';
 const pollAnswers1 = [
-    { option: '', votes: 0 },
+    { option: 'First', votes: 0 },
+    {option: 'Second',votes:2}
 ];
 const pollStyles1 = {
     questionSeparator: true,
@@ -29,11 +32,17 @@ const Polls = ()=>{
     };
     return (
         <div>
-            <Poll question={pollQuestion} answers={pollAnswers1}
-                  onVote={handleVote}
-                  noStorage={true}
-                  customStyles = {pollStyles1}
-            />
+
+            <div className='main-poll'>
+                <div className='poll-window'>
+                    <PollCarousel/>
+                    <Poll question={pollQuestion} answers={pollAnswers1}
+                          onVote={handleVote}
+                          noStorage={true}
+                          customStyles = {pollStyles1}
+                    />
+                </div>
+            </div>
         </div>
     );
 };

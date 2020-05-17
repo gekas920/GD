@@ -52,6 +52,7 @@ class BasicRequests {
     public async logCreate(url:string,body:object){
         return await this.instance.post(url,body);
     }
+
     public async uploadAvatar(url:string,body:object) {
         return await this.instance.post(url, body,
             {
@@ -60,8 +61,9 @@ class BasicRequests {
                 }
             })
     }
-    public async create(url:string,body:object,options?){
-        return await this.instance.post(this.api+url,body);
+
+    public async create(url:string,body,options?){
+        return await this.instance.post(this.api+url,body,options);
     }
 
     public async update(url:string,body?:object){

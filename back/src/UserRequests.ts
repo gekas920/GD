@@ -67,3 +67,7 @@ web.app.put(drive+'/profile/back/:id',(req:express.Request,res:express.Response)
 web.app.get(drive+'/polls',(req:express.Request,res:express.Response)=>{
     PollsController.get(req,res);
 });
+
+web.app.post(drive+'/poll',(req:express.Request,res:express.Response)=>{
+    PollsController.create(req,res)
+});

@@ -1,5 +1,7 @@
 import {Request, Response} from "express";
 const db = require('../models');
+const Files = require('./FilesController');
+
 
 class PollsController{
     private getVoices(arr:any[]){
@@ -20,6 +22,13 @@ class PollsController{
         }
         return res
     }
+
+    private correctObj(obj:any){
+        let lastValue = Object.keys(obj)[Object.keys(obj).length-1];
+        delete obj[lastValue];
+        return {...obj,correct:lastValue.split('')[0]}
+    }
+
     public async get(request: Request, response: Response) {
         const Poll = await db.Poll.findAll();
         const Fields = await db.Field.findAll({
@@ -37,6 +46,32 @@ class PollsController{
             }
         });
         response.send(result)
+    }
+
+    public async create(request:Request,response: Response){
+        delete request.body.file;
+        let body = request.body;
+        body = this.correctObj(body);
+        console.log(parseInt(body.correct));
+        // await db.Poll.findOrCreate({
+        //     where:{
+        //         description:body.title
+        //     },
+        //     defaults:{
+        //         description:body.title,
+        //         draft:body.draft,
+        //         userId:response.locals.user_id
+        //     }
+        // })
+        // for (let key in body){
+        //     if(key.length === 1){
+        //         // @ts-ignore
+        //         const arr = Object.values(request.files);
+        //         arr.forEach((file:any)=>{
+        //             Files.uploadPollFile(file,1)
+        //         });
+        //     }
+        // }
     }
 }
 module.exports = new PollsController();

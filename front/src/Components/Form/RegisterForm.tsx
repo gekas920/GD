@@ -10,9 +10,7 @@ const RegisterForm = (props) => {
     const onSubmit = (values:any) => {
         let file = values.file;
         const formData = new FormData();
-        console.log(file);
         formData.append(file[0].name,file[0]);
-        console.log(formData);
         Requests.logCreate('/register',values)
             .then((response)=>{
                 if(!!response.data.accessToken){

@@ -20,6 +20,11 @@ export interface Elem {
     id:number
 }
 
+export interface Picture {
+    link:string,
+    title:string
+}
+
 export const compareUnpopular = (a, b)=> {
     const A = parseInt(a.count);
     const B = parseInt(b.count);
@@ -45,3 +50,8 @@ export const comparePopular = (a, b)=> {
     }
     return comparison;
 };
+
+Object.filter = (obj, predicate) =>
+    Object.keys(obj)
+        .filter( key => predicate(obj[key]) )
+        .reduce( (res, key) => (res[key] = obj[key], res), {} );

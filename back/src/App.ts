@@ -6,9 +6,13 @@ const db = require('../models');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const dir = './UsersFiles';
+const pollDir = './PollsFiles';
 
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
+}
+if(!fs.existsSync(pollDir)){
+    fs.mkdirSync(pollDir)
 }
 
 app.use(cors());
