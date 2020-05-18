@@ -112,6 +112,17 @@ class ProfileController{
                     })
             })
     }
+
+    public async isAdmin(request:Request,response:Response){
+        await db.User.findOne({
+            where: {
+                id:response.locals.user_id
+            }
+        })
+            .then((user:any)=>{
+                response.send(user.dataValues.admin)
+            })
+    }
 }
 
 module.exports = new ProfileController();

@@ -13,6 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Replay from '@material-ui/icons/Replay'
 
 const Profile = (props) => {
+    console.log(props.setAdmin.admin);
     const { handleSubmit, register, errors} = useForm();
     const [data,updateData] = useState({
         email:'',

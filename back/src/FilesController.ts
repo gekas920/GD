@@ -22,9 +22,13 @@ class Files {
         response.send('ok')
     }
 
-    public uploadPollFile(file:any,pollId:string | number){
+    public uploadPollFile(request:Request,response:Response,pollId:string){
+        // @ts-ignore
+        const arr = Object.values(request.files);
+        arr.forEach((file: any)=>{
             let extension:string | undefined = file.name.split('.').pop();
-            file.mv(__dirname + `/../PollFiles/${pollId}/${md5(file.name)}.${extension}`)
+            file.mv(__dirname + `/../PollsFiles/${pollId}/${md5(file.name)}.${extension}`)
+        });
     }
 }
 

@@ -6,6 +6,11 @@ export const mapDispatchToProps = (dispatch)=> ({
             type:'SET_POLL',
             payload:payload
         })
+    },
+    ShowSnack:()=>{
+        dispatch({
+            type:'SHOW_SNACK'
+        })
     }
 });
 

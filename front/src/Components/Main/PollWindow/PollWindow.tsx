@@ -4,21 +4,19 @@ import {Link} from "react-router-dom"
 import {mapDispatchToProps, mapStateToProps} from "../indexMain";
 
 const PollWindow = (props)=>{
-    const [link,setLink] = useState('/main/polls');
     const handleClick = ()=>{
-        setLink(`/main/polls/${props.id}`);
         props.SetPoll(props.id)
     };
 
-    const link1 = `/main/polls/${props.id}`;
+    const link = `/main/polls/${props.id}`;
 
     return(
-        <Link className='window' onClick={handleClick} to = {link1}>
+        <Link className='window' onClick={handleClick} to = {link}>
             <div className='window-description' >
                 {props.description}
             </div>
             <div className='window-count'>
-                {props.count}
+                {props.count || 0}
             </div>
         </Link>
     )

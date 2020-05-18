@@ -1,12 +1,15 @@
 import React,{useState} from 'react'
 import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
+import {connect} from "react-redux";
+import {mapDispatchToProps, mapStateToProps} from "../indexMain";
 
-const AddPoll = () =>{
-  const { handleSubmit, register, errors} = useForm();
+const AddPoll = (props) =>{
+  const { handleSubmit, register, reset} = useForm();
   const [list, setList] = useState([{ text: "" }]);
   const [disabled,setDisabled] = useState(false);
-  const [draft,setDraft] = useState('');
+  const [draft,setDraft] = useState('0');
+  const [error,setError]= useState('');
 
   const onSubmit = (values) => {
       let files = values.file;
@@ -24,6 +27,16 @@ const AddPoll = () =>{
       Requests.create('/poll',formData,{
           headers:{
               'Content-Type': 'multipart/form-data'
+          }
+      }).then(result=>{
+          if (result)
+              props.ShowSnack();
+          else {
+              setError('Already exist');
+              setTimeout(()=>{
+                 setError('')
+              },2000);
+              reset();
           }
       })
   };
@@ -88,10 +101,13 @@ const AddPoll = () =>{
               <button type="submit">Publish</button>
               <button type="submit" onClick={()=>setDraft('1')}>Save as draft</button>
           </form>
+            <div className='errors'>
+                {error}
+            </div>
         </div>
       </div>
   )
 };
 
 
-export default AddPoll
+export default connect(mapStateToProps,mapDispatchToProps)(AddPoll)

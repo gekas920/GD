@@ -17,10 +17,6 @@ const LoginForm = (props) => {
                     Requests.setAccessToken(response.data.accessToken);
                     Requests.setRefreshToken(response.data.refreshToken);
                     reset();
-                    console.log(response.data);
-                    if(response.data.admin){
-                        props.SetAdmin();
-                    }
                     window.location.href = '/main/polls';
                     return
                 }

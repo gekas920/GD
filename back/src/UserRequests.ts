@@ -16,6 +16,10 @@ web.app.use('/drive-check',(req:express.Request,res:express.Response,next:expres
     middleware.checkRefreshToken(req,res,next);
 });
 
+web.app.get(drive+'/admin',(req:express.Request,res:express.Response)=>{
+    ProfileController.isAdmin(req,res)
+});
+
 web.app.post('/register',(req:express.Request,res:express.Response)=>{
     Auth.CreateUser(req,res);
 });
@@ -70,4 +74,12 @@ web.app.get(drive+'/polls',(req:express.Request,res:express.Response)=>{
 
 web.app.post(drive+'/poll',(req:express.Request,res:express.Response)=>{
     PollsController.create(req,res)
+});
+
+web.app.delete(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
+    PollsController.delete(req,res)
+});
+
+web.app.get(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
+    PollsController.getPoll(req,res)
 });
