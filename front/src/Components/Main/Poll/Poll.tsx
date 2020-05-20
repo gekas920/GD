@@ -9,10 +9,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {mapStateToProps} from "../../Profile/indexProfile";
 import Requests from "../../../Requests";
 
-const pollQuestion = 'Is react-polls useful?';
-const pollAnswers1 = [
-    { option: 'First', votes: 0 },
-    {option: 'Second',votes:2}
+const pollAnswers = [
+    { option: '', votes: 0 },
 ];
 const pollStyles1 = {
     questionSeparator: true,
@@ -25,12 +23,13 @@ const pollStyles1 = {
 
 const Polls = (props)=>{
     const [question,setQuestion] = useState('');
-    const [answers,setAnswers] = useState(pollAnswers1);
+    const [answers,setAnswers] = useState(pollAnswers);
+    const [images,setImages] = useState([]);
 
     const handleDelete = ()=>{
         let idArr = window.location.pathname.split('/');
         let id = idArr[idArr.length-1];
-        Requests.delete(`/poll/${props.setPoll.id ||id}`)
+        Requests.delete(`/poll/${props.setPoll.clicked ||id}`)
             .then(response=>{
                 if(response)
                     window.location.href='/main/polls'
@@ -40,27 +39,36 @@ const Polls = (props)=>{
     useEffect(()=>{
         let idArr = window.location.pathname.split('/');
         let id = idArr[idArr.length-1];
-        Requests.get(`/poll${props.setPoll.id ||id}`)
+        Requests.get(`/poll/${props.setPoll.clicked ||id}`)
             .then(response=>{
-                console.log(response)
+                console.log(response);
+                setQuestion(response.data.title);
+                setImages(response.data.images);
+                let fields = response.data.fields.map(elem=>{
+                    let obj = Object.assign({},elem);
+                    delete obj.correct;
+                    return obj
+                });
+                setAnswers(fields);
             })
     },[props]);
 
     const handleVote = voteAnswer => {
         const  pollAnswers:{ option: string; votes: number; }[]  = answers;
         const newPollAnswers = pollAnswers.map(answer => {
-            console.log(answer);
             if (answer.option === voteAnswer) answer.votes++;
             return answer
         });
+        console.log(props);
         setAnswers(newPollAnswers);
+        Requests.update(`/poll/${props.setPoll.clicked}`,newPollAnswers)
     };
     return (
         <div>
             <div className='main-poll'>
-                <div className='poll-window'>
-                    <PollCarousel/>
-                    <Poll question={pollQuestion} answers={pollAnswers1}
+                <div className='poll-window' style={{overflow:'scroll'}}>
+                    <PollCarousel images = {images}/>
+                    <Poll question={question} answers={answers}
                           onVote={handleVote}
                           noStorage={true}
                           customStyles = {pollStyles1}

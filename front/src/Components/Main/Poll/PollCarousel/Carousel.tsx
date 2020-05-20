@@ -1,25 +1,22 @@
-import React,{useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Carousel } from 'react-responsive-carousel'
-import {Picture} from "../../indexMain";
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 
-const PollCarousel = ()=>{
+const PollCarousel = (props)=>{
 
-    const [data,setData] = useState([{
-        title:'title',
-        link:'https://aospa.co/assets/wallpapers/2018/submerged_desktop_thumb.jpg'
-    },{
-        title:'title',
-        link:'https://aospa.co/assets/wallpapers/2018/submerged_desktop_thumb.jpg'
-    }]);
+    const [data,setData] = useState([]);
 
+    useEffect(()=>{
+        setData(props.images)
+    },[props]);
 
     const filmsInfo = ()=>{
-        let arr = data.map((elem:Picture)=>{
+        let arr = data.map((elem:string,index)=>{
             return(
-                <div>
-                    <h1>{elem.title}</h1>
-                    <img src={elem.link} alt={elem.title}/>
+                <div key={index}>
+                    <img src={elem} alt='img' style={{
+                        width:'auto'
+                    }}/>
                 </div>
             )}
         );
@@ -28,7 +25,7 @@ const PollCarousel = ()=>{
 
     return (
         <Carousel autoPlay showThumbs={false} showStatus={false} infiniteLoop={true} className='container'>
-            {filmsInfo()}
+            {props.images && filmsInfo()}
         </Carousel>
     );
 };

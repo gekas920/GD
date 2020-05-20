@@ -83,3 +83,7 @@ web.app.delete(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
 web.app.get(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
     PollsController.getPoll(req,res)
 });
+
+web.app.put(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
+   PollsController.update(req,res)
+});

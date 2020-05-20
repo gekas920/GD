@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
 import {connect} from "react-redux";
-import {mapDispatchToProps, mapStateToProps} from "../indexMain";
+import {filter, mapDispatchToProps, mapStateToProps} from "../indexMain";
 
 const AddPoll = (props) =>{
   const { handleSubmit, register, reset} = useForm();
@@ -20,7 +20,7 @@ const AddPoll = (props) =>{
 
       formData.append('draft',draft);
 
-      let filtered = Object.filter(values,elem=>!!elem);
+      let filtered = filter(values,elem=>!!elem);
       for (let key in filtered){
           formData.append(key,filtered[key])
       }

@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import {Field, Poll} from "./interfaces";
 const db = require('../models');
 const Files = require('./FilesController');
 const fs = require('fs');
@@ -119,8 +120,50 @@ class PollsController{
         })
     }
 
-    public getPoll(request:Request,response:Response){
+    public async getPoll(request:Request,response:Response){
+        const Fields = await db.Field.findAll({
+            where:{
+                pollId:request.params.id
+            },
+            include:db.Poll
+        });
+        const FieldArr:Field[] = Fields.map((elem:any)=>{
+           return {
+               option:elem.dataValues.name,
+               votes:elem.dataValues.count,
+               correct:elem.dataValues.correct
+           }
+        });
+        fs.readdir(__dirname + `/../PollsFiles/${Fields[0].dataValues.Poll.dataValues.id}`, (err:Error, files:[]) => {
+            let arr;
+            try {
+                arr = files.map((file) => {
+                    return `http://localhost:3000/polls/${Fields[0].dataValues.Poll.dataValues.id}/${file}`
+                });
+            }
+            catch (e) {
+                arr = ''
+            }
+            const poll:Poll = {
+                title:Fields[0].dataValues.Poll.dataValues.description,
+                fields:FieldArr,
+                images:arr
+            };
+            response.send(poll);
+        })
+    }
 
+    public async update(request:Request,response:Response){
+        let fields = await db.Field.findAll({
+            where: {
+                pollId: request.params.id
+            }
+        });
+        fields.forEach((elem:any,index:number)=>{
+            elem.update({
+                count:request.body[index].votes
+            })
+        })
     }
 }
 module.exports = new PollsController();
