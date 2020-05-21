@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {Field, Poll} from "./interfaces";
+
 const db = require('../models');
 const Files = require('./FilesController');
 const fs = require('fs');
@@ -7,23 +8,36 @@ const fs = require('fs');
 
 
 class PollsController{
+    private comparePolls = (a:any, b:any)=> {
+        const A = parseInt(a.dataValues.pollId);
+        const B = parseInt(b.dataValues.pollId);
+
+        let comparison = 0;
+        if (A > B) {
+            comparison = 1;
+        } else if (A < B) {
+            comparison = -1;
+        }
+        return comparison;
+    };
     private getVoices(arr:any[]){
-        let id:number = arr[0].dataValues.pollId;
+        let pollId = arr[0].dataValues.pollId;
         let res: number[] = [];
-        let countVoices = arr[0].dataValues.count;
-        for (let i = 1; i < arr.length; i++){
-            if(arr[i].dataValues.pollId <= id){
-                countVoices+=arr[i].dataValues.count
+        let cnt = 0;
+        arr.sort(this.comparePolls);
+        arr.forEach((elem,index)=>{
+            if(elem.dataValues.pollId === pollId){
+                cnt+=elem.dataValues.count;
             }
             else {
-                res.push(countVoices);
-                countVoices = 0;
-                id = arr[i].dataValues.count;
+                res.push(cnt);
+                cnt = elem.dataValues.count;
+                pollId = elem.dataValues.pollId;
             }
-            if(i === arr.length - 1){
-                res.push(countVoices);
+            if(index === arr.length-1){
+                res.push(cnt);
             }
-        }
+        });
         return res
     }
 
@@ -49,10 +63,7 @@ class PollsController{
     public async get(request: Request, response: Response) {
         const Poll = await db.Poll.findAll();
         const Fields = await db.Field.findAll({
-            attributes:['pollId','count'],
-            include:[{
-                model:db.Poll
-            }]
+            include:db.Poll
         });
         let arr = this.getVoices(Fields);
         let result = Poll.map((elem:any,index:number)=>{

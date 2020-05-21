@@ -41,7 +41,6 @@ const Polls = (props)=>{
         let id = idArr[idArr.length-1];
         Requests.get(`/poll/${props.setPoll.clicked ||id}`)
             .then(response=>{
-                console.log(response);
                 setQuestion(response.data.title);
                 setImages(response.data.images);
                 let fields = response.data.fields.map(elem=>{

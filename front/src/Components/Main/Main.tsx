@@ -35,6 +35,7 @@ const Main = () =>{
     useEffect(()=>{
        Requests.get('/polls')
            .then((response)=>{
+               console.log(response);
                if(response)
                    setData(response.data)
            })
