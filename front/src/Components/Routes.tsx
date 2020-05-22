@@ -31,7 +31,9 @@ function Routes(props) {
                     <NavBar/>
                     <Route exact path = '/main/polls' component = {()=> <Main/>}/>
                     <Route exact path = '/main/profile' component={() => <Profile url = '/profile'/>}/>
+                    <Route exact path = '/main/my' component={() => <Main url = '/my'/>}/>
                     <Route path = '/main/polls/:id' component = {()=><Polls/>}/>
+                    <Route path = '/main/my/:id' component = {()=><Polls/>}/>
                 </Route>
             </Router>
         </div>

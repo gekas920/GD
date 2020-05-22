@@ -10,7 +10,7 @@ import Add from '@material-ui/icons/Add'
 import AddPoll from "./AddPoll/AddPoll";
 
 
-const Main = () =>{
+const Main = (props) =>{
     const [data,setData] = useState([]);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [show,setShow] = useState(false);
@@ -33,9 +33,8 @@ const Main = () =>{
         setAnchorEl(null);
     };
     useEffect(()=>{
-       Requests.get('/polls')
+       Requests.get(props.url || '/polls')
            .then((response)=>{
-               console.log(response);
                if(response)
                    setData(response.data)
            })
@@ -46,17 +45,19 @@ const Main = () =>{
                           count = {elem.count}
                           key = {index}
                           id = {elem.id}
+                          link={props.url}
        />
     });
 
     return (
         <div>
+            {window.location.pathname !== '/main/my' &&
             <div>
                 <button className='back-btn' onClick={()=>setShow(prevState => !prevState)}>
                     <Add/>
                 </button>
                 {show && <AddPoll/>}
-            </div>
+            </div>}
             <div style={{
                 display:'flex',
                 alignItems:'center',

@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
 import {Field, Poll} from "./interfaces";
-
+const path = require('path');
 const db = require('../models');
 const Files = require('./FilesController');
 const fs = require('fs');
-
+const rimraf = require("rimraf");
 
 
 class PollsController{
@@ -60,23 +60,66 @@ class PollsController{
         return newObj
     }
 
-    public async get(request: Request, response: Response) {
-        const Poll = await db.Poll.findAll();
-        const Fields = await db.Field.findAll({
-            include:db.Poll
-        });
-        let arr = this.getVoices(Fields);
-        let result = Poll.map((elem:any,index:number)=>{
-            return {
-                id:elem.dataValues.id,
-                description:elem.dataValues.description,
-                count:arr[index]
-            }
-        });
-        response.send(result)
+    public async get(request: Request, response: Response,id?:string) {
+        let Poll:any[];
+        let Fields;
+        if(id){
+             Poll = await db.Poll.findAll({
+                where:{
+                    userId:id
+                }
+            });
+             Fields = Promise.all(Poll.map(async (elem:any)=>{
+                 return await db.Field.findAll({
+                     where: {
+                         pollId: elem.dataValues.id
+                     }
+                 })
+             }));
+             Fields.then((res:any)=>{
+                 let arr = res.map((elem:any,index:number)=>{
+                    return this.getVoices(elem)
+                 });
+                 let result = Poll.map((elem:any,index:number)=>{
+                     return {
+                         id:elem.dataValues.id,
+                         description:elem.dataValues.description,
+                         count:arr[index]
+                     }
+                 });
+                 response.send(result)
+             })
+        }
+        else {
+            Poll = await db.Poll.findAll({
+                where:{
+                    draft:false
+                }
+            });
+            Fields = await db.Field.findAll();
+            let arr = this.getVoices(Fields);
+            let result = Poll.map((elem:any,index:number)=>{
+                return {
+                    id:elem.dataValues.id,
+                    description:elem.dataValues.description,
+                    count:arr[index]
+                }
+            });
+            response.send(result)
+        }
+
     }
 
-    public async create(request:Request,response: Response){
+    public async create(request:Request,response: Response,id?:string){
+        if(id){
+            await db.Poll.destroy({
+                where: {
+                    id: id
+                }
+            });
+            let directory = __dirname + `/../PollsFiles/${id}`;
+            rimraf(directory, function () { console.log("done"); });
+        }
         delete request.body.file;
         let body = request.body;
         body = this.correctObj(body);
@@ -87,13 +130,15 @@ class PollsController{
             },
             defaults:{
                 description:body.title,
-                draft:body.draft,
+                draft:!!body.draft,
                 userId:response.locals.user_id,
             }
         }).then(([poll,created]:[any,boolean])=>{
             if(created){
-                response.send(200);
                 let id = poll.dataValues.id;
+                response.json({
+                    id:id
+                });
                 fs.mkdirSync(__dirname + `/../PollsFiles/${id}`);
                 if(!body.correct)
                     body.correct = false;
@@ -131,8 +176,8 @@ class PollsController{
         })
     }
 
-    public async getPoll(request:Request,response:Response){
-        const Fields = await db.Field.findAll({
+    public async getPoll(request:Request,response:Response,id?:string){
+        let Fields = await db.Field.findAll({
             where:{
                 pollId:request.params.id
             },
@@ -158,7 +203,8 @@ class PollsController{
             const poll:Poll = {
                 title:Fields[0].dataValues.Poll.dataValues.description,
                 fields:FieldArr,
-                images:arr
+                images:arr,
+                draft:Fields[0].dataValues.Poll.dataValues.draft
             };
             response.send(poll);
         })
@@ -173,6 +219,20 @@ class PollsController{
         fields.forEach((elem:any,index:number)=>{
             elem.update({
                 count:request.body[index].votes
+            })
+        })
+    }
+
+    public async publish(request:Request,response:Response){
+        db.Poll.findOne({
+            where:{
+                id:request.params.id
+            }
+        }).then((poll:any)=>{
+            poll.update({
+                draft:false
+            }).then(()=>{
+                response.sendStatus(200);
             })
         })
     }

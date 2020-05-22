@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, {useState} from 'react'
 import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
 import {connect} from "react-redux";
@@ -45,6 +45,7 @@ const AddPoll = (props) =>{
     list.push({ text: "" });
     setList([...list]);
   };
+
 
   return(
       <div className='companies-info-box'>

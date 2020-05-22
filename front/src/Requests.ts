@@ -66,8 +66,8 @@ class BasicRequests {
         return await this.instance.post(this.api+url,body,options);
     }
 
-    public async update(url:string,body?:object){
-        return await this.instance.put(this.api+url,body)
+    public async update(url:string,body?:object,options?:object){
+        return await this.instance.put(this.api+url,body,options)
     }
 
     public async get(url:string,options?:object){

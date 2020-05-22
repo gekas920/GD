@@ -8,7 +8,7 @@ const PollWindow = (props)=>{
         props.SetPoll(props.id)
     };
 
-    const link = `/main/polls/${props.id}`;
+    const link = props.link ?  `/main/my/${props.id}` : `/main/polls/${props.id}`;
 
     return(
         <Link className='window' onClick={handleClick} to = {link}>

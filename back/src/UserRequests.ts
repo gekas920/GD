@@ -72,6 +72,10 @@ web.app.get(drive+'/polls',(req:express.Request,res:express.Response)=>{
     PollsController.get(req,res);
 });
 
+web.app.get(drive+'/my',(req:express.Request,res:express.Response)=>{
+    PollsController.get(req,res,res.locals.user_id);
+});
+
 web.app.post(drive+'/poll',(req:express.Request,res:express.Response)=>{
     PollsController.create(req,res)
 });
@@ -86,4 +90,12 @@ web.app.get(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
 
 web.app.put(drive+'/poll/:id',(req:express.Request,res:express.Response)=>{
    PollsController.update(req,res)
+});
+
+web.app.put(drive+'/poll/update/:id',(req:express.Request,res:express.Response)=>{
+    PollsController.create(req,res,req.params.id)
+});
+
+web.app.put(drive+'/poll/publish/:id',(req:express.Request,res:express.Response)=>{
+    PollsController.publish(req,res)
 });

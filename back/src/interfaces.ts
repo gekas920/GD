@@ -7,5 +7,6 @@ export interface Field {
 export interface Poll {
     title:string,
     fields:Field[] | Field,
-    images:string | string[] | void
+    images:string | string[] | void,
+    draft:boolean
 }
