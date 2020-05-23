@@ -8,7 +8,7 @@ const AddPoll = (props) =>{
   const { handleSubmit, register, reset} = useForm();
   const [list, setList] = useState([{ text: "" }]);
   const [disabled,setDisabled] = useState(false);
-  const [draft,setDraft] = useState('0');
+  const [draft,setDraft] = useState('');
   const [error,setError]= useState('');
 
   const onSubmit = (values) => {
@@ -29,12 +29,15 @@ const AddPoll = (props) =>{
               'Content-Type': 'multipart/form-data'
           }
       }).then(result=>{
-          if (result)
+
+          if (result && !draft)
+              window.location.href = `/main/polls/${result.data.id}`;
+          if(result && draft)
               props.ShowSnack();
-          else {
+          if(!result && !draft){
               setError('Already exist');
               setTimeout(()=>{
-                 setError('')
+                  setError('')
               },2000);
               reset();
           }

@@ -26,7 +26,7 @@ const NavBar = (props)=> {
     },[]);
 
     return(
-        <div style={window.location.pathname === '/' ? {display:'none'} : {}}>
+        <div>
             <header>
                 <div className='navbar'>
                     <ul>

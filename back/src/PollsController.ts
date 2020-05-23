@@ -21,10 +21,10 @@ class PollsController{
         return comparison;
     };
     private getVoices(arr:any[]){
+        arr.sort(this.comparePolls);
         let pollId = arr[0].dataValues.pollId;
         let res: number[] = [];
         let cnt = 0;
-        arr.sort(this.comparePolls);
         arr.forEach((elem,index)=>{
             if(elem.dataValues.pollId === pollId){
                 cnt+=elem.dataValues.count;
@@ -220,7 +220,12 @@ class PollsController{
             elem.update({
                 count:request.body[index].votes
             })
-        })
+        });
+        let votes = await db.Votes.create({
+            userId:response.locals.user_id,
+            pollId:request.params.id
+        });
+        response.sendStatus(200);
     }
 
     public async publish(request:Request,response:Response){
@@ -236,5 +241,19 @@ class PollsController{
             })
         })
     }
+    public async preventVote(request:Request,response:Response){
+        let votes = await db.Votes.findOne({
+            where:{
+                userId:response.locals.user_id,
+                pollId:request.params.id
+            }
+        });
+        votes ? response.send({
+            vote:true
+        }) : response.send({
+            vote:false
+        })
+    }
+
 }
 module.exports = new PollsController();

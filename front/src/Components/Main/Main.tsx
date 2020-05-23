@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {Button} from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
 import AddPoll from "./AddPoll/AddPoll";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const Main = (props) =>{
@@ -53,9 +54,11 @@ const Main = (props) =>{
         <div>
             {window.location.pathname !== '/main/my' &&
             <div>
-                <button className='back-btn' onClick={()=>setShow(prevState => !prevState)}>
-                    <Add/>
-                </button>
+                <Tooltip title="Add" aria-label="add">
+                    <button className='back-btn' onClick={()=>setShow(prevState => !prevState)}>
+                        <Add/>
+                    </button>
+                </Tooltip>
                 {show && <AddPoll/>}
             </div>}
             <div style={{

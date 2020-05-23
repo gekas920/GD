@@ -7,6 +7,7 @@ const Files = require('./FilesController');
 const ProfileController = require('./ProfileController');
 const UserController = require('./UserController');
 const PollsController = require('./PollsController');
+const ReportController = require('./ReportController');
 
 web.app.use('/drive',(req:express.Request,res:express.Response,next:express.NextFunction)=>{
     middleware.checkAccessToken(req,res,next)
@@ -98,4 +99,12 @@ web.app.put(drive+'/poll/update/:id',(req:express.Request,res:express.Response)=
 
 web.app.put(drive+'/poll/publish/:id',(req:express.Request,res:express.Response)=>{
     PollsController.publish(req,res)
+});
+
+web.app.get(drive+'/poll/votes/:id',(req:express.Request,res:express.Response)=>{
+   PollsController.preventVote(req,res)
+});
+
+web.app.get(drive+'/reasons',(req:express.Request,res:express.Response)=>{
+    ReportController.getReasons(req,res)
 });

@@ -11,6 +11,7 @@ import Users from "./Users/UsersList";
 import DeleteForever from '@material-ui/icons/DeleteForever'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Replay from '@material-ui/icons/Replay'
+import Tooltip from "@material-ui/core/Tooltip";
 
 const Profile = (props) => {
     console.log(props.setAdmin.admin);
@@ -134,10 +135,12 @@ const Profile = (props) => {
             {
                 (props.url === '/profile' && data.admin) &&
                 <div>
-                    <button className='back-btn' onClick={showElem}>
-                        {!show && <ArrowIcon/>}
-                        {show && <ArrowIconBack/>}
-                    </button>
+                    <Tooltip title="Show / Hide list" aria-label="sh">
+                        <button className='back-btn' onClick={showElem}>
+                            {!show && <ArrowIcon/>}
+                            {show && <ArrowIconBack/>}
+                        </button>
+                    </Tooltip>
                     {show && <Users/>}
                 </div>
             }
