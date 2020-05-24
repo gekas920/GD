@@ -16,7 +16,7 @@ interface TableState {
     data: Row[];
 }
 
-function Users(props) {
+function Users() {
     const [state, setState] = React.useState<TableState>({
         columns: [
             { title: 'Initials', field: 'initials' },
@@ -40,7 +40,6 @@ function Users(props) {
     useEffect(()=>{
         Requests.get('/users')
             .then(response=>{
-                console.log(response.data);
                 setState({
                     columns: [
                         { title: 'Initials', field: 'initials' },

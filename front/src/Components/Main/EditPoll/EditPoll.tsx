@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react'
 import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
 import {connect} from "react-redux";
+import ReplayIcon from '@material-ui/icons/Replay'
 import {filter, mapDispatchToProps, mapStateToProps} from "../indexMain";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const AddPoll = (props) =>{
     const { handleSubmit, register} = useForm();
@@ -27,6 +29,7 @@ const AddPoll = (props) =>{
                 'Content-Type': 'multipart/form-data'
             }
         }).then(result=>{
+            props.SetClicked(false);
             if (result)
                 window.location.href = `/main/polls/${result.data.id}`;
             else {
@@ -55,6 +58,13 @@ const AddPoll = (props) =>{
 
     return(
         <div className='companies-info-box'>
+            <Tooltip title="Back" aria-label="back">
+                <button
+                    onClick={()=>props.SetClicked(false)}
+                    className='back-edit-button'>
+                    <ReplayIcon/>
+                </button>
+            </Tooltip>
             <div className='main-form'>
                 <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
                     <input

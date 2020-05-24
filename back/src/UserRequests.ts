@@ -108,3 +108,19 @@ web.app.get(drive+'/poll/votes/:id',(req:express.Request,res:express.Response)=>
 web.app.get(drive+'/reasons',(req:express.Request,res:express.Response)=>{
     ReportController.getReasons(req,res)
 });
+
+web.app.post(drive+'/report',(req:express.Request,res:express.Response)=>{
+   ReportController.create(req,res)
+});
+
+web.app.get(drive+'/report',(req:express.Request,res:express.Response)=>{
+   ReportController.get(req,res)
+});
+
+web.app.get(drive+'/report/:id',(req:express.Request,res:express.Response)=>{
+    ReportController.getReport(req,res)
+});
+
+web.app.delete(drive+'/report/:id',(req:express.Request,res:express.Response)=>{
+   ReportController.delete(req,res)
+});

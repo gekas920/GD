@@ -11,6 +11,12 @@ export const mapDispatchToProps = (dispatch)=> ({
         dispatch({
             type:'SHOW_SNACK'
         })
+    },
+    SetClicked:(payload)=>{
+        dispatch({
+            type:'SET_CLICK',
+            payload:payload
+        })
     }
 });
 

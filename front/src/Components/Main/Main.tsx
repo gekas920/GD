@@ -2,19 +2,23 @@ import React, { useEffect,useState } from 'react';
 import Requests from "../../Requests";
 import './Main.sass'
 import PollWindow from "./PollWindow/PollWindow";
-import {comparePopular, compareUnpopular, Elem} from "./indexMain";
+import {comparePopular, compareUnpopular, Elem, mapStateToProps} from "./indexMain";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Button} from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
 import AddPoll from "./AddPoll/AddPoll";
 import Tooltip from "@material-ui/core/Tooltip";
+import AssigmentIcon from '@material-ui/icons/Assistant'
+import {connect} from "react-redux";
+import ReportList from "./Reports/ReportList";
 
 
 const Main = (props) =>{
     const [data,setData] = useState([]);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [show,setShow] = useState(false);
+    const [showRep,setShowReports] = useState(false);
 
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -61,6 +65,20 @@ const Main = (props) =>{
                 </Tooltip>
                 {show && <AddPoll/>}
             </div>}
+            {window.location.pathname !=='/main/my' && props.setAdmin.admin &&
+            <div>
+                <Tooltip title="Reports" aria-label="add">
+                    <button className='back-btn'
+                            onClick={()=>setShowReports(prevState => !prevState)}
+                            style={{
+                        marginTop:'49vh'
+                    }}>
+                        <AssigmentIcon/>
+                    </button>
+                </Tooltip>
+                {showRep && <ReportList/>}
+            </div>
+            }
             <div style={{
                 display:'flex',
                 alignItems:'center',
@@ -90,4 +108,4 @@ const Main = (props) =>{
         </div>
     );
 };
-export default Main
+export default connect(mapStateToProps)(Main)

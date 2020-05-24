@@ -6,12 +6,13 @@ import Select from '@material-ui/core/Select';
 import './Report.sass'
 import {Input, TextField} from "@material-ui/core";
 import Requests from "../../../Requests";
-import {Type} from "./indexReport";
+import {mapDispatchToProps, Type} from "./indexReport";
 import {useForm} from "react-hook-form";
 import SendIcon from "@material-ui/icons/Send";
+import {connect} from "react-redux";
 
 
-const Report = ()=>{
+const Report = (props)=>{
     const { handleSubmit, register} = useForm();
     const [selected, setSelected] = useState('');
     const [types,setTypes] = useState([]);
@@ -35,8 +36,13 @@ const Report = ()=>{
     const onSubmit = () =>{
       Requests.create('/report',{
           type:selected,
-          description:text
+          description:text,
+          pollId:props.id
       })
+          .then(response=>{
+              if(response)
+                  props.ShowSnack();
+          })
     };
 
 
@@ -90,4 +96,4 @@ const Report = ()=>{
 };
 
 
-export default Report
+export default connect(()=>{},mapDispatchToProps)(Report)

@@ -170,7 +170,6 @@ class PollsController{
                 response.sendStatus(200);
             })
                 .catch((err:Error)=>{
-                    console.log(err);
                     response.sendStatus(500);
                 })
         })
@@ -181,7 +180,12 @@ class PollsController{
             where:{
                 pollId:request.params.id
             },
-            include:db.Poll
+            include:[
+                {
+                    model:db.Poll,
+                    include:db.User
+                }
+            ]
         });
         const FieldArr:Field[] = Fields.map((elem:any)=>{
            return {
@@ -204,7 +208,8 @@ class PollsController{
                 title:Fields[0].dataValues.Poll.dataValues.description,
                 fields:FieldArr,
                 images:arr,
-                draft:Fields[0].dataValues.Poll.dataValues.draft
+                draft:Fields[0].dataValues.Poll.dataValues.draft,
+                name:Fields[0].dataValues.Poll.dataValues.User.initials
             };
             response.send(poll);
         })

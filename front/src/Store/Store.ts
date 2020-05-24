@@ -1,9 +1,9 @@
 import {createStore,combineReducers} from 'redux'
-import {setAdmin, setPoll, snackReducer} from "./Reducers";
+import {setAdmin, setPoll, setShow, snackReducer} from "./Reducers";
 
 export const store = createStore(
     combineReducers({
-        snackReducer,setAdmin,setPoll
+        snackReducer,setAdmin,setPoll,setShow
     })
 );
 

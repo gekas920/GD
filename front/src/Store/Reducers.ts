@@ -3,7 +3,8 @@ import {Action, AppState} from "./Types";
 export const appState:AppState = {
     showSnack:false,
     admin:false,
-    clicked:0
+    clicked:0,
+    show:false
 };
 
 export function snackReducer(state = appState, action:Action) {
@@ -42,4 +43,14 @@ export function setPoll(state = appState, action:Action) {
     return state
 }
 
+export function setShow(state=appState,action:Action) {
+    if(action.type === 'SET_CLICK'){
+        return{
+            ...state,
+            show:action.payload
+        }
+    }
+    return state
+
+}
 
