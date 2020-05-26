@@ -3,6 +3,8 @@ import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
 import {connect} from "react-redux";
 import {filter, mapDispatchToProps, mapStateToProps} from "../indexMain";
+import {Dialog} from "@material-ui/core";
+import CheckboxList from "./SetPrivateDialog/SetPrivateDialog";
 
 const AddPoll = (props) =>{
   const { handleSubmit, register, reset} = useForm();
@@ -10,7 +12,8 @@ const AddPoll = (props) =>{
   const [disabled,setDisabled] = useState(false);
   const [draft,setDraft] = useState('');
   const [error,setError]= useState('');
-
+  const [open,setOpen] = useState(false);
+  const isAdmin = props.setAdmin.admin;
   const onSubmit = (values) => {
       let files = values.file;
       const formData = new FormData();
@@ -19,6 +22,7 @@ const AddPoll = (props) =>{
       }
 
       formData.append('draft',draft);
+      formData.append('id',JSON.stringify(props.setId.ids));
 
       let filtered = filter(values,elem=>!!elem);
       for (let key in filtered){
@@ -52,6 +56,7 @@ const AddPoll = (props) =>{
 
   return(
       <div className='companies-info-box'>
+          <Dialog open={open} onClose = {()=>setOpen(false)}><CheckboxList/></Dialog>
         <div className='main-form'>
           <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
             <input
@@ -103,6 +108,9 @@ const AddPoll = (props) =>{
             />
               <button onClick={addInput}>Add</button>
               <button type="submit">Publish</button>
+              {isAdmin &&
+              <button type='button' onClick={()=>setOpen(true)}>Set Private</button>
+              }
               <button type="submit" onClick={()=>setDraft('1')}>Save as draft</button>
           </form>
             <div className='errors'>

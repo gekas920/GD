@@ -4,7 +4,8 @@ export const appState:AppState = {
     showSnack:false,
     admin:false,
     clicked:0,
-    show:false
+    show:false,
+    ids:[]
 };
 
 export function snackReducer(state = appState, action:Action) {
@@ -51,6 +52,15 @@ export function setShow(state=appState,action:Action) {
         }
     }
     return state
+}
 
+export function setId(state = appState,action:Action) {
+    if(action.type === 'SET_ID'){
+        return{
+            ...state,
+            ids:action.payload
+        }
+    }
+    return state
 }
 

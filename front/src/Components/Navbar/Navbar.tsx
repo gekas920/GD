@@ -31,10 +31,16 @@ const NavBar = (props)=> {
                 <div className='navbar'>
                     <ul>
                         <li><Link to='/main/polls' className='navbar--elem'
+                                  style = {window.location.pathname.includes('polls') ?
+                                      {backgroundColor:'whitesmoke',borderBottom :'2px #ff48b1 solid'} : {}}
                                   onClick={handleClick}>Main</Link></li>
                         <li><Link to='/main/my' className='navbar--elem'
+                                  style = {window.location.pathname.includes('my') ?
+                                      {backgroundColor:'whitesmoke',borderBottom :'2px #ff48b1 solid'} : {}}
                                   onClick={handleClick}>My Polls</Link></li>
                         <li><Link to='/main/profile' className='navbar--elem'
+                                  style = {window.location.pathname.includes('profile') ?
+                                      {backgroundColor:'whitesmoke',borderBottom :'2px #ff48b1 solid'} : {}}
                                   onClick={handleClick}>Profile</Link></li>
                     </ul>
                 </div>

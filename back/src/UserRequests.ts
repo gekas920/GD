@@ -124,3 +124,11 @@ web.app.get(drive+'/report/:id',(req:express.Request,res:express.Response)=>{
 web.app.delete(drive+'/report/:id',(req:express.Request,res:express.Response)=>{
    ReportController.delete(req,res)
 });
+
+web.app.get(drive+'/users/add',(req:express.Request,res:express.Response)=>{
+    ProfileController.getUsers(req,res)
+});
+
+web.app.get(drive+'/poll/private/:id',(req:express.Request,res:express.Response)=>{
+    PollsController.private(req,res)
+});

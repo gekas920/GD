@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Votes', {
+    return queryInterface.createTable('PrivateViews', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,7 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-       c
+        type: Sequelize.INTEGER,
+        references:{
+          model:'Users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       pollId: {
         type: Sequelize.INTEGER,
@@ -30,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Votes');
+    return queryInterface.dropTable('PrivateViews');
   }
 };

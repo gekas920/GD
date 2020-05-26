@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {Field, Poll} from "./interfaces";
+
 const path = require('path');
 const db = require('../models');
 const Files = require('./FilesController');
@@ -98,14 +99,26 @@ class PollsController{
             });
             Fields = await db.Field.findAll();
             let arr = this.getVoices(Fields);
-            let result = Poll.map((elem:any,index:number)=>{
-                return {
-                    id:elem.dataValues.id,
-                    description:elem.dataValues.description,
-                    count:arr[index]
+            let result = Poll.map(async (elem:any,index:number)=>{
+                let view = await db.PrivateView.findOne({
+                    where:{
+                        pollId:elem.dataValues.id
+                    }
+                });
+                if(!view){
+                    return {
+                        id:elem.dataValues.id,
+                        description:elem.dataValues.description,
+                        count:arr[index]
+                    }
                 }
             });
-            response.send(result)
+            Promise.all(result).then((result:any)=>{
+                let body = result.filter((elem:any)=>{
+                    return !!elem
+                });
+                response.send(body)
+            });
         }
 
     }
@@ -122,6 +135,7 @@ class PollsController{
         }
         delete request.body.file;
         let body = request.body;
+        let ids = JSON.parse(request.body.id);
         body = this.correctObj(body);
         let fields = this.clearFields(body);
         let poll = await db.Poll.findOrCreate({
@@ -136,6 +150,14 @@ class PollsController{
         }).then(([poll,created]:[any,boolean])=>{
             if(created){
                 let id = poll.dataValues.id;
+                if(ids){
+                    ids.forEach((elem:number)=>{
+                        db.PrivateView.create({
+                            pollId:id,
+                            userId:elem
+                        })
+                    });
+                }
                 response.json({
                     id:id
                 });
@@ -258,6 +280,28 @@ class PollsController{
         }) : response.send({
             vote:false
         })
+    }
+    public async private(request:Request,response:Response){
+        let privateView = await db.PrivateView.findAll({
+            where:{
+                pollId:request.params.id
+            }
+        });
+
+        if(privateView.length){
+            let flag = false;
+            privateView.forEach((elem:any)=>{
+               if(response.locals.user_id === elem.dataValues.userId){
+                   flag=true
+               }
+            });
+            if(flag)
+                response.send('private_ok');
+            else
+                response.send('private')
+        }
+        else
+            response.send('ok')
     }
 
 }

@@ -31,9 +31,9 @@ export interface Elem {
     id:number
 }
 
-export interface Picture {
-    link:string,
-    title:string
+export interface User {
+    initials:string,
+    id:string
 }
 
 export const compareUnpopular = (a, b)=> {

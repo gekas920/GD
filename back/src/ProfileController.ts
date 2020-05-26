@@ -123,6 +123,19 @@ class ProfileController{
                 response.send(user.dataValues.admin)
             })
     }
+
+    public async getUsers(request:Request,response:Response){
+        let arr = await db.User.findAll({
+            attributes:['initials','id']
+        });
+        let result = arr.map((elem:any)=>{
+            return {
+                initials:elem.dataValues.initials,
+                id:elem.dataValues.id
+            }
+        });
+        response.send(result)
+    }
 }
 
 module.exports = new ProfileController();

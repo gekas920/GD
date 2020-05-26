@@ -40,6 +40,7 @@ const Polls = (props)=>{
     const [error,setError] = useState('');
     const [open,setOpen] = useState(false);
     const [name,setName] = useState('');
+    const [privatePoll,setPrivate] = useState(false);
 
 
     let idArr = window.location.pathname.split('/');
@@ -71,6 +72,13 @@ const Polls = (props)=>{
 
 
     useEffect(()=>{
+        Requests.get(`/poll/private/${props.setPoll.clicked || id}`)
+            .then(response=>{
+                if(response.data === 'private')
+                    window.location.href = '/main/polls';
+                if(response.data === 'private_ok')
+                    setPrivate(true)
+            });
         Requests.get(`/poll/${props.setPoll.clicked ||id}`)
             .then(response=>{
                 getCorrect(response.data.fields);
@@ -88,7 +96,7 @@ const Polls = (props)=>{
         Requests.get(`/poll/votes/${props.setPoll.clicked || id}`)
             .then(response=>{
                 setVote(response.data.vote);
-            })
+            });
     },[props.setPoll]);
 
     const handleVote = voteAnswer => {
@@ -137,6 +145,15 @@ const Polls = (props)=>{
                               noStorage={true}
                               customStyles = {pollStyles1}
                         />
+                        {privatePoll &&
+                        <div style={{
+                            color:"white",
+                            fontStyle:'italic',
+                            margin:'0 auto',
+                        }}>
+                            It's a private poll. Link : localhost:3001/main/polls/{id}
+                        </div>
+                        }
                         {error &&
                         <div className='error'>
                             Correct answer is {error}
