@@ -2,8 +2,7 @@ import React, {useEffect} from 'react'
 import MaterialTable, {Column} from "material-table";
 import Requests from "../../../Requests";
 import Dialog from "@material-ui/core/Dialog";
-import Profile from "../../Profile/Profile";
-import ReportDialog from "./ReportDialog/ReportDialog";
+import {ReportDialog} from "./ReportDialog/indexReportDialog";
 
 interface Row {
     title:string

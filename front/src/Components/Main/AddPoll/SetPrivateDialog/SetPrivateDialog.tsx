@@ -9,8 +9,7 @@ import Requests from "../../../../Requests";
 import {User} from "../../indexMain";
 import SendIcon from "@material-ui/icons/Send";
 import './SetPrivateDialog.sass'
-import {connect} from "react-redux";
-import {mapDispatchToProps} from "./indexPrivate";
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const CheckboxList = (props) => {
+export const CheckboxList = (props) => {
     console.log(props);
     const classes = useStyles();
     const [checked, setChecked] = useState([0]);
@@ -101,4 +100,3 @@ const CheckboxList = (props) => {
     );
 };
 
-export default connect(()=>{return {}},mapDispatchToProps)(CheckboxList)

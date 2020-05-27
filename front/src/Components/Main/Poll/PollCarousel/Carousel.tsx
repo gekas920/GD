@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css"
+import {PropsCarousel} from "./indexCarousel";
 
-const PollCarousel = (props)=>{
+export const PollCarousel:React.FC<PropsCarousel> = (props)=>{
 
-    const [data,setData] = useState([]);
+    const [data,setData] = useState(['']);
 
     useEffect(()=>{
         setData(props.images)
@@ -30,4 +31,3 @@ const PollCarousel = (props)=>{
     );
 };
 
-export default PollCarousel

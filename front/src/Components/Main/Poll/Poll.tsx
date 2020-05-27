@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import Poll from 'react-polls';
 import './Poll.sass'
-import PollCarousel from "./PollCarousel/Carousel";
 import '../../Profile/Profile.sass'
-import {connect} from "react-redux";
-import {mapDispatchToProps} from "../indexMain";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {mapStateToProps} from "../../Profile/indexProfile";
 import Requests from "../../../Requests";
 import SendIcon from '@material-ui/icons/Send'
 import EditIcon from '@material-ui/icons/Edit'
-import EditPoll from "../EditPoll/EditPoll";
 import Tooltip from '@material-ui/core/Tooltip';
 import ReportIcon from '@material-ui/icons/Report'
 import {Dialog} from "@material-ui/core";
-import Report from "../Report/Report";
+import {EditPoll} from "../EditPoll/indexEditPoll";
+import {PropsPoll} from "./indexPoll";
+import {Report} from "../Report/indexReport";
+import {PollCarousel} from "./PollCarousel/indexCarousel";
 
 
 const pollAnswers = [
@@ -29,7 +27,7 @@ const pollStyles1 = {
     theme: 'white',
 };
 
-const Polls = (props)=>{
+export const Polls:React.FC<PropsPoll> = (props)=>{
     const [question,setQuestion] = useState('');
     const [answers,setAnswers] = useState(pollAnswers);
     const [images,setImages] = useState([]);
@@ -47,7 +45,7 @@ const Polls = (props)=>{
     let id = idArr[idArr.length-1];
 
     const handleDelete = ()=>{
-        Requests.delete(`/poll/${props.setPoll.clicked ||id}`)
+        Requests.delete(`/poll/${props.clicked ||id}`)
             .then(response=>{
                 if(response)
                     window.location.href='/main/polls'
@@ -72,14 +70,14 @@ const Polls = (props)=>{
 
 
     useEffect(()=>{
-        Requests.get(`/poll/private/${props.setPoll.clicked || id}`)
+        Requests.get(`/poll/private/${props.clicked || id}`)
             .then(response=>{
                 if(response.data === 'private')
                     window.location.href = '/main/polls';
                 if(response.data === 'private_ok')
                     setPrivate(true)
             });
-        Requests.get(`/poll/${props.setPoll.clicked ||id}`)
+        Requests.get(`/poll/${props.clicked ||id}`)
             .then(response=>{
                 getCorrect(response.data.fields);
                 setDraft(response.data.draft);
@@ -93,11 +91,11 @@ const Polls = (props)=>{
                 });
                 setAnswers(fields);
             });
-        Requests.get(`/poll/votes/${props.setPoll.clicked || id}`)
+        Requests.get(`/poll/votes/${props.clicked || id}`)
             .then(response=>{
                 setVote(response.data.vote);
             });
-    },[props.setPoll]);
+    },[id,props.clicked]);
 
     const handleVote = voteAnswer => {
         if(correct && (correct!==voteAnswer)){
@@ -109,7 +107,7 @@ const Polls = (props)=>{
             return answer
         });
         setAnswers(newPollAnswers);
-        Requests.update(`/poll/${props.setPoll.clicked || id}`,newPollAnswers)
+        Requests.update(`/poll/${props.clicked || id}`,newPollAnswers)
     };
 
     let def = window.location.pathname.includes('my');
@@ -117,14 +115,14 @@ const Polls = (props)=>{
 
     return (
         <div>
-            {props.setShow.show && <EditPoll id={props.setPoll.clicked || id}/>}
-            <Dialog open={open} onClose={()=>setOpen(false)}><Report id={id || props.setPoll.clicked}/></Dialog>
+            {props.show && <EditPoll id={props.clicked || id}/>}
+            <Dialog open={open} onClose={()=>setOpen(false)}><Report id={id || props.clicked}/></Dialog>
             {draft &&
             <div>
                 <button className='back-btn' onClick={()=>setShow(prevState => !prevState)}>
                     <EditIcon/>
                 </button>
-                {show && <EditPoll id={props.setPoll.clicked || id}/>}
+                {show && <EditPoll id={props.clicked || id}/>}
             </div>
             }
             <div className='main-poll'>
@@ -171,7 +169,7 @@ const Polls = (props)=>{
                             </button>
                         </Tooltip>
                         }
-                        {(props.setAdmin.admin || window.location.pathname.includes('my')) &&
+                        {(props.admin || window.location.pathname.includes('my')) &&
                         <Tooltip title="Delete" aria-label="delete">
                             <button className='delete-poll' onClick={handleDelete}>
                                 <DeleteIcon/>
@@ -179,7 +177,7 @@ const Polls = (props)=>{
                         </Tooltip>
                         }
                         {
-                            (props.setAdmin.admin && window.location.pathname.includes('polls')) &&
+                            (props.admin && window.location.pathname.includes('polls')) &&
                             <Tooltip title="Edit" aria-label="delete">
                                 <button className='delete-poll'
                                         style={{
@@ -202,5 +200,3 @@ const Polls = (props)=>{
         </div>
     );
 };
-
-export default connect(mapStateToProps,mapDispatchToProps)(Polls)

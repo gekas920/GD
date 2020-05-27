@@ -2,19 +2,17 @@ import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import '../Form/Form.sass'
 import Requests from "../../Requests";
-import {mapDispatchToProps, mapStateToProps, userData} from "./indexProfile";
-import {connect} from "react-redux";
+import {ProfileProps, userData} from "./indexProfile";
 import './Profile.sass'
 import ArrowIcon from '@material-ui/icons/ArrowForward';
 import ArrowIconBack from '@material-ui/icons/ArrowBack';
-import Users from "./Users/UsersList";
 import DeleteForever from '@material-ui/icons/DeleteForever'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Replay from '@material-ui/icons/Replay'
 import Tooltip from "@material-ui/core/Tooltip";
+import {Users} from "./Users/indexUsersList";
 
-const Profile = (props) => {
-    console.log(props.setAdmin.admin);
+export const Profile:React.FC<ProfileProps> = (props) => {
     const { handleSubmit, register, errors} = useForm();
     const [data,updateData] = useState({
         email:'',
@@ -22,7 +20,7 @@ const Profile = (props) => {
         initials:'',
         about:'',
         img:'',
-        admin:props.setAdmin.admin
+        admin:props.admin
     });
     const [show,showBlock] = useState(false);
     const showElem = ()=>{
@@ -179,5 +177,3 @@ const Profile = (props) => {
         </div>
     );
 };
-
-export default connect(mapStateToProps,mapDispatchToProps)(Profile)

@@ -10,13 +10,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ReportIcon from "@material-ui/icons/Report";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import {connect} from "react-redux";
-import {mapStateToProps} from "../../../Profile/indexProfile";
-import {mapDispatchToProps} from "../../indexMain";
 import {Link} from "react-router-dom"
+import {PropsReportDialog} from "./indexReportDialog";
 
 
-const ReportDialog = (props)=>{
+export const ReportDialog:React.FC<PropsReportDialog> = (props)=>{
     const [selected,setSelected] = useState('');
     const [description,setDescription] = useState('');
     const [pollId,setPollId] = useState('');
@@ -33,7 +31,7 @@ const ReportDialog = (props)=>{
            .catch(()=>{
                window.location.href = '/main/polls'
            })
-    },[]);
+    },[props.id]);
     const selectField = ()=>{
         if(selected)
             return <MenuItem value={selected}>{selected}</MenuItem>
@@ -112,4 +110,3 @@ const ReportDialog = (props)=>{
   )
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(ReportDialog)

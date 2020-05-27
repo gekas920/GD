@@ -1,18 +1,16 @@
 import React from "react";
 import {Route,Router,Redirect} from "react-router";
 import {createBrowserHistory} from "history";
-import AllForms from "./Form/AllForms";
-import NavBar from "./Navbar/Navbar";
-import Profile from "./Profile/Profile";
-import Snack from "./Snack/Snack";
-import Main from "./Main/Main";
-import {connect} from "react-redux";
-import {mapStateToProps} from "./indexRoutes";
-import Polls from "./Main/Poll/Poll";
+import {AllForms} from "./Form/indexForm";
+import {NavBar} from "./Navbar/indexNavbar";
+import {Profile} from "./Profile/indexProfile";
+import {Snack} from "./Snack/indexSnack";
+import {Main} from "./Main/indexMain";
+import {Polls} from "./Main/Poll/indexPoll";
 
 const history = createBrowserHistory();
 
-function Routes(props) {
+const Routes = ()=> {
     return(
         <div>
             <Snack/>
@@ -30,14 +28,14 @@ function Routes(props) {
                 <Route path = '/main'>
                     <NavBar/>
                     <Route exact path = '/main/polls' component = {()=> <Main/>}/>
-                    <Route exact path = '/main/profile' component={() => <Profile url = '/profile'/>}/>
                     <Route exact path = '/main/my' component={() => <Main url = '/my'/>}/>
+                    <Route exact path = '/main/profile' component={() => <Profile url = '/profile'/>}/>
                     <Route path = '/main/polls/:id' component = {()=><Polls/>}/>
                     <Route path = '/main/my/:id' component = {()=><Polls/>}/>
                 </Route>
             </Router>
         </div>
     )
-}
+};
 
-export default connect(mapStateToProps)(Routes)
+export default Routes

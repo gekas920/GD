@@ -1,4 +1,6 @@
-import {AppState} from "../../Store/Types";
+import {Main as MainComponent} from "./Main";
+import {connect} from "react-redux";
+
 
 export const mapDispatchToProps = (dispatch)=> ({
     SetPoll:(payload)=>{
@@ -20,10 +22,28 @@ export const mapDispatchToProps = (dispatch)=> ({
     }
 });
 
-
-export const mapStateToProps = (state : AppState) =>{
-    return state
+export const mapStateToProps = (state) =>{
+    return{
+        admin:state.setAdmin.admin
+    }
 };
+
+export interface MainProps {
+    url?:string
+    admin:boolean,
+    ShowSnack:()=>void,
+    SetClicked:(clicked:string)=>void,
+    SetPoll:(clicked:string)=>void,
+}
+
+
+
+const Main = connect(mapStateToProps,mapDispatchToProps)(MainComponent);
+
+export {
+    Main
+}
+
 
 export interface Elem {
     description:string,
@@ -35,6 +55,7 @@ export interface User {
     initials:string,
     id:string
 }
+
 
 export const compareUnpopular = (a, b)=> {
     const A = parseInt(a.count);

@@ -2,12 +2,9 @@ import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import './Form.sass'
 import Requests from "../../Requests";
-import {connect} from "react-redux";
-import {mapDispatchToProps, mapStateToProps} from "./indexForm";
 
 
-const LoginForm = (props) => {
-    console.log(props);
+export const LoginForm = () => {
     const { handleSubmit, register, errors , reset} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:object) => {
@@ -65,4 +62,3 @@ const LoginForm = (props) => {
     );
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(LoginForm)

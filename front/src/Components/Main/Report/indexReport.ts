@@ -1,11 +1,25 @@
+import {Report as ReportComponent} from "./Report";
+import {connect} from "react-redux";
+
 export interface Type {
     type:string
 }
 
-export const mapDispatchToProps = (dispatch)=> ({
+export interface PropsReport {
+    id:string|number,
+    ShowSnack:()=>void
+}
+
+const mapDispatchToProps = (dispatch)=> ({
     ShowSnack:()=>{
         dispatch({
             type:'SHOW_SNACK'
         })
     }
 });
+
+const Report = connect(()=>{return {}},mapDispatchToProps)(ReportComponent);
+
+export {
+    Report
+}

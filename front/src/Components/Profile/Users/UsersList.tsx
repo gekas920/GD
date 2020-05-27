@@ -4,7 +4,7 @@ import {useEffect} from 'react'
 import MaterialTable, { Column } from 'material-table';
 import Requests from "../../../Requests";
 import Dialog from '@material-ui/core/Dialog';
-import Profile from "../Profile";
+import {Profile} from "../indexProfile";
 
 interface Row {
     initials:string
@@ -16,7 +16,7 @@ interface TableState {
     data: Row[];
 }
 
-function Users() {
+export const Users =()=> {
     const [state, setState] = React.useState<TableState>({
         columns: [
             { title: 'Initials', field: 'initials' },
@@ -71,4 +71,3 @@ function Users() {
     )
 }
 
-export default Users

@@ -4,7 +4,7 @@ import './Form.sass'
 import Requests from "../../Requests";
 
 
-const RegisterForm = (props) => {
+export const RegisterForm = () => {
     const { handleSubmit, register, errors ,reset,watch} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:any) => {
@@ -132,4 +132,3 @@ const RegisterForm = (props) => {
     );
 };
 
-export default RegisterForm

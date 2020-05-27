@@ -2,10 +2,9 @@ import React, {useEffect} from "react"
 import {Link} from "react-router-dom"
 import './NavigationBar.sass'
 import Requests from "../../Requests";
-import {connect} from "react-redux";
-import {mapDispatchToProps, mapStateToProps} from "../Form/indexForm";
+import {NavBarProps} from "./indexNavbar";
 
-const NavBar = (props)=> {
+export const NavBar : React.FC<NavBarProps> = (props)=> {
     const handleClick = event=>{
         let arr = document.querySelectorAll<HTMLElement>('.navbar--elem');
         let elem = event.target;
@@ -23,7 +22,7 @@ const NavBar = (props)=> {
                props.SetAdmin();
            }
        })
-    },[]);
+    });
 
     return(
         <div>
@@ -49,4 +48,3 @@ const NavBar = (props)=> {
     );
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(NavBar)

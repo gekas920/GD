@@ -1,14 +1,16 @@
-import {AppState} from "../../Store/Types";
-
-export const mapDispatchToProps = (dispatch)=> ({
-    SetAdmin:()=>{
-        dispatch({
-            type:'SET_ADMIN',
-        })
-    }
-});
+import {RegisterForm as RegisterFormComponent} from "./RegisterForm";
+import {LoginForm as LoginFormComponent} from "./LoginForm";
+import {AllForms as AllFormsComponent} from "./AllForms";
 
 
-export const mapStateToProps = (state : AppState) =>{
-    return state
-};
+
+const LoginForm = LoginFormComponent;
+const RegisterForm = RegisterFormComponent;
+const AllForms = AllFormsComponent;
+
+export {
+    LoginForm,
+    RegisterForm,
+    AllForms
+}
+

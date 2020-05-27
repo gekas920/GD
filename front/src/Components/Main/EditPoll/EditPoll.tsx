@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
-import {connect} from "react-redux";
 import ReplayIcon from '@material-ui/icons/Replay'
-import {filter, mapDispatchToProps, mapStateToProps} from "../indexMain";
+import {filter} from "../indexMain";
 import Tooltip from "@material-ui/core/Tooltip";
+import {PropsEditPoll} from "./indexEditPoll";
 
-const AddPoll = (props) =>{
+export const EditPoll:React.FC<PropsEditPoll> = (props) =>{
     const { handleSubmit, register} = useForm();
     const [list, setList] = useState([{ option: "" }]);
     const [disabled,setDisabled] = useState(false);
@@ -52,7 +52,7 @@ const AddPoll = (props) =>{
                 setTitle(response.data.title);
                 setList(response.data.fields);
             })
-    },[]);
+    });
 
 
 
@@ -128,4 +128,3 @@ const AddPoll = (props) =>{
 };
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddPoll)

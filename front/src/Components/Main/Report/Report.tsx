@@ -6,13 +6,12 @@ import Select from '@material-ui/core/Select';
 import './Report.sass'
 import {Input, TextField} from "@material-ui/core";
 import Requests from "../../../Requests";
-import {mapDispatchToProps, Type} from "./indexReport";
 import {useForm} from "react-hook-form";
 import SendIcon from "@material-ui/icons/Send";
-import {connect} from "react-redux";
+import {PropsReport, Type} from "./indexReport";
 
 
-const Report = (props)=>{
+export const Report:React.FC<PropsReport> = (props)=>{
     const { handleSubmit, register} = useForm();
     const [selected, setSelected] = useState('');
     const [types,setTypes] = useState([]);
@@ -96,4 +95,3 @@ const Report = (props)=>{
 };
 
 
-export default connect(()=>{},mapDispatchToProps)(Report)

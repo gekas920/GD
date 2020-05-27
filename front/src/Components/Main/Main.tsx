@@ -1,20 +1,19 @@
 import React, { useEffect,useState } from 'react';
 import Requests from "../../Requests";
 import './Main.sass'
-import PollWindow from "./PollWindow/PollWindow";
-import {comparePopular, compareUnpopular, Elem, mapStateToProps} from "./indexMain";
+import {comparePopular, compareUnpopular, Elem, MainProps} from "./indexMain";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Button} from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
-import AddPoll from "./AddPoll/AddPoll";
 import Tooltip from "@material-ui/core/Tooltip";
 import AssigmentIcon from '@material-ui/icons/Assistant'
-import {connect} from "react-redux";
 import ReportList from "./Reports/ReportList";
+import {PollWindow} from "./PollWindow/indexPollWindow";
+import {AddPoll} from "./AddPoll/indexAddPoll";
 
 
-const Main = (props) =>{
+export const Main:React.FC<MainProps> = (props) =>{
     const [data,setData] = useState([]);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [show,setShow] = useState(false);
@@ -43,14 +42,14 @@ const Main = (props) =>{
                if(response)
                    setData(response.data)
            })
-    },[]);
+    },[props.url]);
 
     const elemArr = data.map((elem:Elem,index)=>{
        return <PollWindow description = {elem.description}
                           count = {elem.count}
                           key = {index}
                           id = {elem.id}
-                          link={props.url}
+                          link={props.url || ''}
        />
     });
 
@@ -65,7 +64,7 @@ const Main = (props) =>{
                 </Tooltip>
                 {show && <AddPoll/>}
             </div>}
-            {window.location.pathname !=='/main/my' && props.setAdmin.admin &&
+            {window.location.pathname !=='/main/my' && props.admin &&
             <div>
                 <Tooltip title="Reports" aria-label="add">
                     <button className='back-btn'
@@ -108,4 +107,3 @@ const Main = (props) =>{
         </div>
     );
 };
-export default connect(mapStateToProps)(Main)

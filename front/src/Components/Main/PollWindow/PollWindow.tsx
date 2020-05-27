@@ -1,9 +1,8 @@
 import React from 'react'
-import {connect} from "react-redux";
 import {Link} from "react-router-dom"
-import {mapDispatchToProps, mapStateToProps} from "../indexMain";
+import {PropsPollWindow} from "./indexPollWindow";
 
-const PollWindow = (props)=>{
+export const PollWindow:React.FC<PropsPollWindow> = (props)=>{
     const handleClick = ()=>{
         props.SetPoll(props.id)
     };
@@ -23,4 +22,3 @@ const PollWindow = (props)=>{
 };
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(PollWindow)

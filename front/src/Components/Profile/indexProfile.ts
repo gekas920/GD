@@ -1,4 +1,5 @@
-import {AppState} from "../../Store/Types";
+import {Profile as ProfileComponent} from "./Profile";
+import {connect} from "react-redux";
 
 export interface userData {
     email:string,
@@ -7,7 +8,13 @@ export interface userData {
     about:string
 }
 
-export const mapDispatchToProps = (dispatch)=> ({
+export interface ProfileProps {
+    ShowSnack:()=>void,
+    admin:boolean,
+    url:string
+}
+
+const mapDispatchToProps = (dispatch)=> ({
     ShowSnack:()=>{
         dispatch({
             type:'SHOW_SNACK',
@@ -15,7 +22,14 @@ export const mapDispatchToProps = (dispatch)=> ({
     }
 });
 
-
-export const mapStateToProps = (state : AppState) =>{
-    return state
+const mapStateToProps = (state) =>{
+    return {
+        admin:state.setAdmin.admin
+    }
 };
+
+const Profile = connect(mapStateToProps,mapDispatchToProps)(ProfileComponent);
+
+export {
+    Profile
+}

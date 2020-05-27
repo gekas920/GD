@@ -1,11 +1,10 @@
 import React, {useState} from "react";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
 import Fade from 'react-reveal/Fade';
 import './Form.sass'
+import {LoginForm, RegisterForm} from "./indexForm";
 
 
-function AllForms(){
+export const AllForms = ()=>{
     const [choose,setState] = useState(0);
     function handleClick(number:number) {
         setState(number)
@@ -20,6 +19,5 @@ function AllForms(){
             {!!choose && <Fade right><RegisterForm/></Fade>}
         </div>
     )
-}
+};
 
-export default AllForms

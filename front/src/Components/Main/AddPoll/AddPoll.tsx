@@ -1,19 +1,19 @@
 import React, {useState} from 'react'
 import {useForm} from "react-hook-form";
 import Requests from "../../../Requests";
-import {connect} from "react-redux";
-import {filter, mapDispatchToProps, mapStateToProps} from "../indexMain";
+import {filter} from "../indexMain";
 import {Dialog} from "@material-ui/core";
-import CheckboxList from "./SetPrivateDialog/SetPrivateDialog";
+import {PropsAddPoll} from "./indexAddPoll";
+import {CheckboxList} from "./SetPrivateDialog/SetPrivateDialog";
 
-const AddPoll = (props) =>{
+export const AddPoll:React.FC<PropsAddPoll> = (props) =>{
   const { handleSubmit, register, reset} = useForm();
   const [list, setList] = useState([{ text: "" }]);
   const [disabled,setDisabled] = useState(false);
   const [draft,setDraft] = useState('');
   const [error,setError]= useState('');
   const [open,setOpen] = useState(false);
-  const isAdmin = props.setAdmin.admin;
+  const isAdmin = props.admin;
   const onSubmit = (values) => {
       let files = values.file;
       const formData = new FormData();
@@ -22,7 +22,7 @@ const AddPoll = (props) =>{
       }
 
       formData.append('draft',draft);
-      formData.append('id',JSON.stringify(props.setId.ids));
+      formData.append('id',JSON.stringify(props.ids));
 
       let filtered = filter(values,elem=>!!elem);
       for (let key in filtered){
@@ -122,4 +122,3 @@ const AddPoll = (props) =>{
 };
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddPoll)
