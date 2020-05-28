@@ -4,7 +4,7 @@ import Requests from "../../../Requests";
 import {filter} from "../indexMain";
 import {Dialog} from "@material-ui/core";
 import {PropsAddPoll} from "./indexAddPoll";
-import {CheckboxList} from "./SetPrivateDialog/SetPrivateDialog";
+import CheckboxList from "./SetPrivateDialog/SetPrivateDialog";
 
 export const AddPoll:React.FC<PropsAddPoll> = (props) =>{
   const { handleSubmit, register, reset} = useForm();

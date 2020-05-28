@@ -1,9 +1,10 @@
-import {CheckboxList as CheckboxListComponent} from "./SetPrivateDialog";
-import {connect} from "react-redux";
+
+import {AppState} from "../../../../Store/Types";
 
 
 
 export interface PropsCheckBoxList {
+    setId:AppState
     SetID:(arr:string[])=>void,
     ShowSnack:()=>void
 }
@@ -23,10 +24,15 @@ export const mapDispatchToProps = (dispatch)=> ({
         })
     }
 });
+export const mapStateToProps = (state) =>{
+    return {
+        ids:state.setId.ids
+    }
+};
 
-const CheckBoxList = connect(()=>{return {}},mapDispatchToProps)(CheckboxListComponent);
-
-
-export {
-    CheckBoxList
-}
+// const CheckBoxList = connect(mapStateToProps,mapDispatchToProps)(CheckboxListComponent);
+//
+//
+// export {
+//     CheckBoxList
+// }

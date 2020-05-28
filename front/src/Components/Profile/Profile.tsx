@@ -118,7 +118,7 @@ export const Profile:React.FC<ProfileProps> = (props) => {
                         ref={register({
                             required: 'Required',
                             pattern: {
-                                value: /^[A-Z0-9._%+-]{5}/i,
+                                value: /^[A-Z0-9\s._%+-]{5}/i,
                                 message: `Too short ${name}`
                             }
                         })}

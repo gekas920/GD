@@ -9,7 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-       c
+        type: Sequelize.INTEGER,
+        references:{
+          model:'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE'
       },
       pollId: {
         type: Sequelize.INTEGER,

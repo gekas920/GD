@@ -69,5 +69,5 @@ export const Users =()=> {
             }
         </div>
     )
-}
+};
 
