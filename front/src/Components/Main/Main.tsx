@@ -11,6 +11,7 @@ import AssigmentIcon from '@material-ui/icons/Assistant'
 import ReportList from "./Reports/ReportList";
 import {PollWindow} from "./PollWindow/indexPollWindow";
 import {AddPoll} from "./AddPoll/indexAddPoll";
+import {MainGet} from "./MainRequests";
 
 
 export const Main:React.FC<MainProps> = (props) =>{
@@ -37,10 +38,10 @@ export const Main:React.FC<MainProps> = (props) =>{
         setAnchorEl(null);
     };
     useEffect(()=>{
-       Requests.get(props.url || '/polls')
-           .then((response)=>{
-               if(response)
-                   setData(response.data)
+       MainGet(props.url || '/polls')
+           .then((result)=>{
+               if(result)
+                   setData(result)
            })
     },[props.url]);
 

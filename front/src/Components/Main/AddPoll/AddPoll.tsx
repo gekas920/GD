@@ -1,13 +1,12 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useForm} from "react-hook-form";
-import Requests from "../../../Requests";
 import {filter} from "../indexMain";
 import {Dialog} from "@material-ui/core";
 import {PropsAddPoll} from "./indexAddPoll";
 import CheckboxList from "./SetPrivateDialog/SetPrivateDialog";
 
 export const AddPoll:React.FC<PropsAddPoll> = (props) =>{
-  const { handleSubmit, register, reset} = useForm();
+  const { handleSubmit, register} = useForm();
   const [list, setList] = useState([{ text: "" }]);
   const [disabled,setDisabled] = useState(false);
   const [draft,setDraft] = useState('');
@@ -28,25 +27,25 @@ export const AddPoll:React.FC<PropsAddPoll> = (props) =>{
       for (let key in filtered){
           formData.append(key,filtered[key])
       }
-      Requests.create('/poll',formData,{
+
+
+      props.AddPollReq('/poll',formData,{
           headers:{
               'Content-Type': 'multipart/form-data'
           }
-      }).then(result=>{
-
-          if (result && !draft)
-              window.location.href = `/main/polls/${result.data.id}`;
-          if(result && draft)
-              props.ShowSnack();
-          if(!result && !draft){
-              setError('Already exist');
-              setTimeout(()=>{
-                  setError('')
-              },2000);
-              reset();
-          }
-      })
+      },draft);
   };
+
+
+  useEffect(()=>{
+      if(props.exist){
+          setError('Already exist');
+          setTimeout(()=>{
+              props.HideEx();
+              setError('')
+          },2000);
+      }
+  },[props.exist]);
 
   const addInput = () => {
     list.push({ text: "" });

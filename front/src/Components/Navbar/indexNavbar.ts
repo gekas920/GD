@@ -1,17 +1,16 @@
 import {connect} from "react-redux";
 import {NavBar as NavBarComponent} from "./Navbar";
+import {SetUserAdmin} from "./NavBarRequests";
 
 
 const mapDispatchToProps = (dispatch)=> ({
-    SetAdmin:()=>{
-        dispatch({
-            type:'SET_ADMIN',
-        })
+    SetAdmin:(url:string)=>{
+        dispatch(SetUserAdmin(url))
     }
 });
 
 export interface NavBarProps {
-    SetAdmin:()=>void
+    SetAdmin:(url:string)=>void
 }
 
 

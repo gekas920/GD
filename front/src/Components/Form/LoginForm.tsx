@@ -1,34 +1,29 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import './Form.sass'
-import Requests from "../../Requests";
+import {Login} from "./FormRequests";
 
 
 export const LoginForm = () => {
     const { handleSubmit, register, errors , reset} = useForm();
     const [warning,setWarning] = useState('');
     const onSubmit = (values:object) => {
-        Requests.logCreate('/login',values)
-            .then((response)=>{
-                if(!!response.data.accessToken){
-                    Requests.setAccessToken(response.data.accessToken);
-                    Requests.setRefreshToken(response.data.refreshToken);
-                    reset();
-                    window.location.href = '/main/polls';
-                    return
-                }
-                if(response.data.status === 'not found'){
-                    setWarning('Incorrect data');
-                    reset();
-                    setTimeout(()=>{
-                        setWarning('')
-                    },3000)
-                }
-                if(response.data.status === 'invalid password'){
-                    setWarning('Wrong password');
-                    setTimeout(()=>{
-                        setWarning('')
-                    },3000)
+        Login('/login',values)
+            .then(result=>{
+                switch (result) {
+                    case "incorrect data":
+                        setWarning('Incorrect data');
+                                reset();
+                                setTimeout(()=>{
+                                    setWarning('')
+                                },3000);
+                        break;
+                    case "invalid password":
+                        setWarning('Wrong password');
+                                setTimeout(()=>{
+                                    setWarning('')
+                                },3000);
+                        break;
                 }
             })
     };

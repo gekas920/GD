@@ -5,7 +5,8 @@ export const appState:AppState = {
     admin:false,
     clicked:0,
     show:false,
-    ids:[]
+    ids:[],
+    existError:false
 };
 
 export function snackReducer(state = appState, action:Action) {
@@ -64,3 +65,18 @@ export function setId(state = appState,action:Action) {
     return state
 }
 
+export function setEx(state = appState,action:Action) {
+    if(action.type === 'SET_EX'){
+        return{
+            ...state,
+            existError: true
+        }
+    }
+    if (action.type === 'HIDE_EX'){
+        return {
+            ...state,
+            existError: false
+        }
+    }
+    return state
+}

@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Replay from '@material-ui/icons/Replay'
 import Tooltip from "@material-ui/core/Tooltip";
 import {Users} from "./Users/indexUsersList";
+import {GetUser} from "./ProfileRequests";
 
 export const Profile:React.FC<ProfileProps> = (props) => {
     const { handleSubmit, register, errors} = useForm();
@@ -27,21 +28,12 @@ export const Profile:React.FC<ProfileProps> = (props) => {
         showBlock(prevState => !prevState);
     };
     const onSubmit = (values:Record<string, userData>) => {
-        Requests.update(props.url,values)
-            .then((response)=>{
-                if(response){
-                    props.ShowSnack();
-                }
-            })
+        props.UpdateInfo(props.url,values)
     };
 
     const goBack = ()=>{
         let id = props.url.split('/')[2];
-        Requests.update(`/profile/back/${id}`)
-            .then((response)=>{
-                if(response)
-                    props.ShowSnack();
-            })
+        props.UpdateInfo(`/profile/back/${id}`)
     };
 
     const handleClick = ()=>{
@@ -52,29 +44,19 @@ export const Profile:React.FC<ProfileProps> = (props) => {
     const deleteVariables = (variable:boolean)=>{
         let id = props.url.split('/')[2];
         if(variable){
-            Requests.delete(`/profile/forever/${id}`)
-                .then((response)=>{
-                    if(response){
-                        props.ShowSnack();
-                    }
-                })
+            props.DeleteUser(`/profile/forever/${id}`)
         }
         else {
-            Requests.delete(`/profile/delete/${id}`)
-                .then((response)=>{
-                    if(response){
-                        props.ShowSnack();
-                    }
-                });
+            props.DeleteUser(`/profile/delete/${id}`);
         }
     };
 
     useEffect(()=>{
-       Requests.get(props.url)
-           .then(result=>{
-               result.data.date = result.data.date.split('T')[0];
-               updateData(result.data);
-           })
+        GetUser(props.url)
+            .then(result=>{
+                result.date = result.date.split('T')[0];
+                updateData(result);
+            });
     },[props.url]);
 
     function inputForm(name:string) {

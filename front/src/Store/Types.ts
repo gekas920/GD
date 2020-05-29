@@ -3,7 +3,8 @@ export interface AppState {
     admin:boolean,
     clicked:number,
     show:boolean,
-    ids:number[]
+    ids:number[],
+    existError:boolean
 }
 
 
@@ -13,6 +14,8 @@ const SET_ADMIN = 'SET_ADMIN';
 const SET_POLL = 'SET_POLL';
 const SET_SHOW = 'SET_CLICK';
 const SET_ID = 'SET_ID';
+const SET_EX = 'SET_EX';
+const HIDE_EX= 'HIDE_EX';
 interface ShowSnack {
     type: typeof SHOW_SNACK
 }
@@ -36,4 +39,12 @@ interface SetId {
     payload:number[]
 }
 
-export type Action = ShowSnack | HideSnack | SetAdmin | SetPoll | SetShow | SetId
+interface SetEx {
+    type:typeof SET_EX
+}
+
+interface HideEx {
+    type:typeof HIDE_EX
+}
+
+export type Action = ShowSnack | HideSnack | SetAdmin | SetPoll | SetShow | SetId | SetEx | HideEx

@@ -1,5 +1,6 @@
 import {Profile as ProfileComponent} from "./Profile";
 import {connect} from "react-redux";
+import {DeleteUserInfo, UpdateUserInfo} from "./ProfileRequests";
 
 export interface userData {
     email:string,
@@ -10,6 +11,8 @@ export interface userData {
 
 export interface ProfileProps {
     ShowSnack:()=>void,
+    UpdateInfo:(url:string,body?)=>void,
+    DeleteUser:(url:string)=>void,
     admin:boolean,
     url:string
 }
@@ -19,6 +22,12 @@ const mapDispatchToProps = (dispatch)=> ({
         dispatch({
             type:'SHOW_SNACK',
         })
+    },
+    UpdateInfo:(url,body)=>{
+        dispatch(UpdateUserInfo(url,body))
+    },
+    DeleteUser:(url)=>{
+        dispatch(DeleteUserInfo(url))
     }
 });
 

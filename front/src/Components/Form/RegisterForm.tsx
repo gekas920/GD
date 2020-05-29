@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import './Form.sass'
-import Requests from "../../Requests";
+import {Register} from "./FormRequests";
 
 
 export const RegisterForm = () => {
@@ -11,23 +11,15 @@ export const RegisterForm = () => {
         let file = values.file;
         const formData = new FormData();
         formData.append(file[0].name,file[0]);
-        Requests.logCreate('/register',values)
-            .then((response)=>{
-                if(!!response.data.accessToken){
-                    Requests.uploadAvatar(`/avatar/${response.data.id}`,formData);
-                    Requests.setAccessToken(response.data.accessToken);
-                    Requests.setRefreshToken(response.data.refreshToken);
+        Register('/register',values,formData)
+            .then(result=>{
+                if(result){
+                    setWarning('User already exist');
                     reset();
-                    window.location.href = '/main/polls';
-                    return
+                    setTimeout(()=>{
+                        setWarning('')
+                    },3000)
                 }
-            })
-            .catch((err:Error)=>{
-                setWarning('User already exist');
-                reset();
-                setTimeout(()=>{
-                    setWarning('')
-                },3000)
             })
     };
 

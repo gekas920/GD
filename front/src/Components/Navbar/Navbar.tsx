@@ -1,7 +1,6 @@
 import React, {useEffect} from "react"
 import {Link} from "react-router-dom"
 import './NavigationBar.sass'
-import Requests from "../../Requests";
 import {NavBarProps} from "./indexNavbar";
 
 export const NavBar : React.FC<NavBarProps> = (props)=> {
@@ -17,11 +16,7 @@ export const NavBar : React.FC<NavBarProps> = (props)=> {
     };
 
     useEffect(()=>{
-       Requests.get('/admin').then(response=>{
-           if(response.data){
-               props.SetAdmin();
-           }
-       })
+        props.SetAdmin('/admin')
     });
 
     return(

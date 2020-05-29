@@ -47,16 +47,10 @@ class Auth{
             .catch((error: Error) => {
                 console.log(error)
             });
-        // db.User.destroy({
-        //     where: {},
-        //     truncate: true
-        // })
-
     }
     public async LogUser(request:Request, response: Response) {
         const login:string = request.body.login;
         const password:string = request.body.password;
-        console.log(hash.hashSync('admin', hash.salt));
         await db.User.findOne({
             where: {
                 login
