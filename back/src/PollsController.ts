@@ -97,7 +97,12 @@ class PollsController{
                     draft:false
                 }
             });
-            Fields = await db.Field.findAll();
+            Fields = await db.Field.findAll({
+                include:[{
+                    model:db.Poll,
+                    where: {draft: false}
+                }]
+            });
             let arr = this.getVoices(Fields);
             let result = Poll.map(async (elem:any,index:number)=>{
                 let view = await db.PrivateView.findOne({
