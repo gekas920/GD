@@ -10,7 +10,6 @@ export interface userData {
 }
 
 export interface ProfileProps {
-    ShowSnack:()=>void,
     UpdateInfo:(url:string,body?)=>void,
     DeleteUser:(url:string)=>void,
     admin:boolean,
@@ -18,11 +17,6 @@ export interface ProfileProps {
 }
 
 const mapDispatchToProps = (dispatch)=> ({
-    ShowSnack:()=>{
-        dispatch({
-            type:'SHOW_SNACK',
-        })
-    },
     UpdateInfo:(url,body)=>{
         dispatch(UpdateUserInfo(url,body))
     },

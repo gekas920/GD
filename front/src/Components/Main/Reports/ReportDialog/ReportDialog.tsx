@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import {Link} from "react-router-dom"
 import {PropsReportDialog} from "./indexReportDialog";
+import {DeleteAction, GetReportData} from "./ReportDialogRequests";
 
 
 export const ReportDialog:React.FC<PropsReportDialog> = (props)=>{
@@ -20,12 +21,12 @@ export const ReportDialog:React.FC<PropsReportDialog> = (props)=>{
     const [pollId,setPollId] = useState('');
 
     useEffect(()=>{
-       Requests.get(`/report/${props.id}`)
-           .then(response=>{
-               if(response){
-                   setSelected(response.data.type);
-                   setDescription(response.data.description);
-                   setPollId(response.data.pollId);
+       GetReportData(`/report/${props.id}`)
+           .then(result=>{
+               if(result){
+                   setSelected(result.type);
+                   setDescription(result.description);
+                   setPollId(result.pollId);
                }
            })
            .catch(()=>{
@@ -38,19 +39,11 @@ export const ReportDialog:React.FC<PropsReportDialog> = (props)=>{
     };
 
     const handleReject = ()=>{
-      Requests.delete(`/report/${props.id}`)
-          .then(response=>{
-              if(response)
-                  window.location.href = '/main/polls'
-          })
+        DeleteAction(`/report/${props.id}`);
     };
 
     const handleDelete = ()=>{
-        Requests.delete(`/poll/${pollId}`)
-            .then(response=>{
-                if(response)
-                    window.location.href='/main/polls'
-            })
+        DeleteAction(`/poll/${pollId}`);
     };
 
   return(

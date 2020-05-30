@@ -3,7 +3,6 @@ import Poll from 'react-polls';
 import './Poll.sass'
 import '../../Profile/Profile.sass'
 import DeleteIcon from "@material-ui/icons/Delete";
-import Requests from "../../../Requests";
 import SendIcon from '@material-ui/icons/Send'
 import EditIcon from '@material-ui/icons/Edit'
 import Tooltip from '@material-ui/core/Tooltip';
@@ -13,12 +12,13 @@ import {EditPoll} from "../EditPoll/indexEditPoll";
 import {PropsPoll} from "./indexPoll";
 import {Report} from "../Report/indexReport";
 import {PollCarousel} from "./PollCarousel/indexCarousel";
+import {CheckPrivate, GetInfo, PollAction, UpdatePoll} from "./PollRequests";
 
 
 const pollAnswers = [
     { option: '', votes: 0 },
 ];
-const pollStyles1 = {
+const pollStyles = {
     questionSeparator: true,
     questionSeparatorWidth: 'question',
     questionBold: true ,
@@ -45,19 +45,11 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
     let id = idArr[idArr.length-1];
 
     const handleDelete = ()=>{
-        Requests.delete(`/poll/${props.clicked ||id}`)
-            .then(response=>{
-                if(response)
-                    window.location.href='/main/polls'
-            })
+        PollAction(`/poll/${props.clicked ||id}`);
     };
 
     const handlePublish = ()=>{
-      Requests.update(`/poll/publish/${id}`)
-          .then(response=>{
-              if(response)
-                  window.location.href=`/main/polls/${id}`
-          })
+        PollAction(`/poll/publish/${id}`);
     };
 
     const getCorrect = (arr)=>{
@@ -70,30 +62,28 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
 
 
     useEffect(()=>{
-        Requests.get(`/poll/private/${props.clicked || id}`)
-            .then(response=>{
-                if(response.data === 'private')
-                    window.location.href = '/main/polls';
-                if(response.data === 'private_ok')
-                    setPrivate(true)
+        CheckPrivate(`/poll/private/${props.clicked || id}`)
+            .then(result=>{
+               if(result === 'private_ok')
+                   setPrivate(true)
             });
-        Requests.get(`/poll/${props.clicked ||id}`)
-            .then(response=>{
-                getCorrect(response.data.fields);
-                setDraft(response.data.draft);
-                setQuestion(response.data.title);
-                setImages(response.data.images);
-                setName(response.data.name);
-                let fields = response.data.fields.map(elem=>{
+        GetInfo(`/poll/${props.clicked ||id}`)
+            .then(result=>{
+                getCorrect(result.fields);
+                setDraft(result.draft);
+                setQuestion(result.title);
+                setImages(result.images);
+                setName(result.name);
+                let fields = result.fields.map(elem=>{
                     let obj = Object.assign({},elem);
                     delete obj.correct;
                     return obj
                 });
                 setAnswers(fields);
             });
-        Requests.get(`/poll/votes/${props.clicked || id}`)
-            .then(response=>{
-                setVote(response.data.vote);
+        GetInfo(`/poll/votes/${props.clicked || id}`)
+            .then(result=>{
+                setVote(result.vote);
             });
     },[id,props.clicked]);
 
@@ -107,7 +97,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
             return answer
         });
         setAnswers(newPollAnswers);
-        Requests.update(`/poll/${props.clicked || id}`,newPollAnswers)
+        UpdatePoll(`/poll/${props.clicked || id}`,newPollAnswers);
     };
 
     let def = window.location.pathname.includes('my');
@@ -141,7 +131,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
                         <Poll question={question} answers={answers}
                               onVote={handleVote}
                               noStorage={true}
-                              customStyles = {pollStyles1}
+                              customStyles = {pollStyles}
                         />
                         {privatePoll &&
                         <div style={{

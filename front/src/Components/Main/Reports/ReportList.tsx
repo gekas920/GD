@@ -3,6 +3,7 @@ import MaterialTable, {Column} from "material-table";
 import Requests from "../../../Requests";
 import Dialog from "@material-ui/core/Dialog";
 import {ReportDialog} from "./ReportDialog/indexReportDialog";
+import {GetReports} from "./ReportListRequests";
 
 interface Row {
     title:string
@@ -31,17 +32,16 @@ const ReportList = ()=>{
     };
 
     useEffect(()=>{
-       Requests.get('/report')
-           .then(response=>{
-               if(response)
-                   setState({
-                       columns:[
-                           { title: 'Title', field: 'title' },
-                           { title: 'Type', field: 'type' }
-                       ],
-                       data:response.data
-                   })
-           })
+        GetReports('/report')
+            .then(result=>{
+                setState({
+                    columns:[
+                        { title: 'Title', field: 'title' },
+                        { title: 'Type', field: 'type' }
+                    ],
+                    data:result
+                })
+            });
     },[]);
 
     return(

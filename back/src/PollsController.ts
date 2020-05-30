@@ -130,17 +130,32 @@ class PollsController{
 
     public async create(request:Request,response: Response,id?:string){
         if(id){
-            await db.Poll.destroy({
-                where: {
-                    id: id
+            let poll = await db.Poll.findOne({
+                where:{
+                    description:request.body.title
                 }
             });
-            let directory = __dirname + `/../PollsFiles/${id}`;
-            rimraf(directory, function () { console.log("done"); });
+            if(poll){
+                response.sendStatus(409);
+                return
+            }
+
+            else {
+                await db.Poll.destroy({
+                    where: {
+                        id: id
+                    }
+                });
+                let directory = __dirname + `/../PollsFiles/${id}`;
+                rimraf(directory, function () { console.log("done"); });
+            }
         }
         delete request.body.file;
         let body = request.body;
-        let ids = JSON.parse(request.body.id);
+        let ids:number[];
+        if(request.body.id){
+            ids = JSON.parse(request.body.id);
+        }
         body = this.correctObj(body);
         let fields = this.clearFields(body);
         let poll = await db.Poll.findOrCreate({

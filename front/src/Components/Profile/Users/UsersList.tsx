@@ -5,6 +5,7 @@ import MaterialTable, { Column } from 'material-table';
 import Requests from "../../../Requests";
 import Dialog from '@material-ui/core/Dialog';
 import {Profile} from "../indexProfile";
+import {GetUsers} from "./UsersListRequests";
 
 interface Row {
     initials:string
@@ -38,14 +39,14 @@ export const Users =()=> {
 
 
     useEffect(()=>{
-        Requests.get('/users')
-            .then(response=>{
+        GetUsers('/users')
+            .then(result=>{
                 setState({
                     columns: [
                         { title: 'Initials', field: 'initials' },
                         { title: 'Deleted', field: 'deleted' }
                     ],
-                    data: response.data
+                    data: result
                 })
             })
     },[]);

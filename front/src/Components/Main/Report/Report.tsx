@@ -9,6 +9,7 @@ import Requests from "../../../Requests";
 import {useForm} from "react-hook-form";
 import SendIcon from "@material-ui/icons/Send";
 import {PropsReport, Type} from "./indexReport";
+import {GetTypes} from "./ReportRequests";
 
 
 export const Report:React.FC<PropsReport> = (props)=>{
@@ -26,22 +27,18 @@ export const Report:React.FC<PropsReport> = (props)=>{
     };
 
     useEffect(()=>{
-        Requests.get('/reasons')
-            .then(response=>{
-                setTypes(response.data)
-            })
+        GetTypes('/reasons')
+            .then(result=>{
+                setTypes(result)
+            });
     },[]);
 
     const onSubmit = () =>{
-      Requests.create('/report',{
-          type:selected,
-          description:text,
-          pollId:props.id
-      })
-          .then(response=>{
-              if(response)
-                  props.ShowSnack();
-          })
+        props.CreateRep('/report',{
+            type:selected,
+            description:text,
+            pollId:props.id
+        });
     };
 
 

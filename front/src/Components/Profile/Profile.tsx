@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import '../Form/Form.sass'
-import Requests from "../../Requests";
 import {ProfileProps, userData} from "./indexProfile";
 import './Profile.sass'
 import ArrowIcon from '@material-ui/icons/ArrowForward';

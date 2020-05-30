@@ -5,6 +5,7 @@ import ReplayIcon from '@material-ui/icons/Replay'
 import {filter} from "../indexMain";
 import Tooltip from "@material-ui/core/Tooltip";
 import {PropsEditPoll} from "./indexEditPoll";
+import {getData} from "./EditPollRequests";
 
 export const EditPoll:React.FC<PropsEditPoll> = (props) =>{
     const { handleSubmit, register} = useForm();
@@ -24,19 +25,9 @@ export const EditPoll:React.FC<PropsEditPoll> = (props) =>{
         for (let key in filtered){
             formData.append(key,filtered[key])
         }
-        Requests.update(`/poll/update/${props.id}`,formData,{
+        props.EditPollReq(`/poll/update/${props.id}`,formData,{
             headers:{
                 'Content-Type': 'multipart/form-data'
-            }
-        }).then(result=>{
-            props.SetClicked(false);
-            if (result)
-                window.location.href = `/main/polls/${result.data.id}`;
-            else {
-                setError('Already exist');
-                setTimeout(()=>{
-                    setError('')
-                },2000);
             }
         })
     };
@@ -47,12 +38,22 @@ export const EditPoll:React.FC<PropsEditPoll> = (props) =>{
     };
 
     useEffect(()=>{
-        Requests.get(`/poll/${props.id}`)
-            .then(response=>{
-                setTitle(response.data.title);
-                setList(response.data.fields);
-            })
-    });
+        getData(`/poll/${props.id}`)
+            .then(result=>{
+                setTitle(result.title);
+                setList(result.fields);
+            });
+    },[]);
+
+    useEffect(()=>{
+        if(props.exist){
+            setError('Already exist');
+            setTimeout(()=>{
+                props.HideEx();
+                setError('')
+            },2000);
+        }
+    },[props.exist]);
 
 
 

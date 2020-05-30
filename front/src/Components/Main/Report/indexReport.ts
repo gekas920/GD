@@ -1,5 +1,6 @@
 import {Report as ReportComponent} from "./Report";
 import {connect} from "react-redux";
+import {CreateReportReq} from "./ReportRequests";
 
 export interface Type {
     type:string
@@ -7,14 +8,12 @@ export interface Type {
 
 export interface PropsReport {
     id:string|number,
-    ShowSnack:()=>void
+    CreateRep:(url,body)=>void
 }
 
 const mapDispatchToProps = (dispatch)=> ({
-    ShowSnack:()=>{
-        dispatch({
-            type:'SHOW_SNACK'
-        })
+    CreateRep:(url,body)=>{
+        dispatch(CreateReportReq(url,body))
     }
 });
 

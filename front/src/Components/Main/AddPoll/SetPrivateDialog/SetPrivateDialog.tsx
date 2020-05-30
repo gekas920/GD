@@ -11,6 +11,7 @@ import SendIcon from "@material-ui/icons/Send";
 import './SetPrivateDialog.sass'
 import {mapDispatchToProps, mapStateToProps} from "./indexPrivate";
 import {connect} from "react-redux";
+import {AddUsers} from "./SetPrivateDialogRequests";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -57,11 +58,11 @@ const CheckboxList = (props) => {
     };
 
     useEffect(()=>{
-        Requests.get('/users/add')
-            .then(response=>{
-                if(response){
-                    setUsers(response.data);
-                    let arr = response.data.map((elem,index)=>{
+        AddUsers('/users/add')
+            .then(result=>{
+                if(result){
+                    setUsers(result);
+                    let arr = result.map((elem,index)=>{
                         return index
                     });
                     serArray(arr)
