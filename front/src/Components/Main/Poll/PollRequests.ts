@@ -15,9 +15,15 @@ export const GetInfo = async (url)=>{
 };
 
 export const PollAction = async (url)=>{
-  let Result= await Requests.delete(url);
+  let Result= await Requests.update(url);
   if(Result)
       window.location.href='/main/polls'
+};
+
+export const PollDelete = async (url)=>{
+    let Result= await Requests.delete(url);
+    if(Result)
+        window.location.href='/main/polls'
 };
 
 export const UpdatePoll = async (url,body)=>{

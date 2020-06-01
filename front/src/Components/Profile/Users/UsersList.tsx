@@ -2,7 +2,6 @@ import React from "react";
 import '../Profile.sass'
 import {useEffect} from 'react'
 import MaterialTable, { Column } from 'material-table';
-import Requests from "../../../Requests";
 import Dialog from '@material-ui/core/Dialog';
 import {Profile} from "../indexProfile";
 import {GetUsers} from "./UsersListRequests";

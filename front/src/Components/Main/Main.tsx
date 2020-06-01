@@ -1,5 +1,4 @@
 import React, { useEffect,useState } from 'react';
-import Requests from "../../Requests";
 import './Main.sass'
 import {comparePopular, compareUnpopular, Elem, MainProps} from "./indexMain";
 import Menu from '@material-ui/core/Menu';
@@ -8,6 +7,7 @@ import {Button} from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
 import Tooltip from "@material-ui/core/Tooltip";
 import AssigmentIcon from '@material-ui/icons/Assistant'
+import ListIcon from '@material-ui/icons/List'
 import ReportList from "./Reports/ReportList";
 import {PollWindow} from "./PollWindow/indexPollWindow";
 import {AddPoll} from "./AddPoll/indexAddPoll";
@@ -77,6 +77,14 @@ export const Main:React.FC<MainProps> = (props) =>{
                     </button>
                 </Tooltip>
                 {showRep && <ReportList/>}
+                <Tooltip title="Categories" aria-label="add">
+                    <button className='back-btn'
+                            style={{
+                                marginTop:'55vh'
+                            }}>
+                        <ListIcon/>
+                    </button>
+                </Tooltip>
             </div>
             }
             <div style={{

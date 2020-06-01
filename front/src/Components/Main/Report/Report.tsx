@@ -5,7 +5,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import './Report.sass'
 import {Input, TextField} from "@material-ui/core";
-import Requests from "../../../Requests";
 import {useForm} from "react-hook-form";
 import SendIcon from "@material-ui/icons/Send";
 import {PropsReport, Type} from "./indexReport";

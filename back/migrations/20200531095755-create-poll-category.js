@@ -1,36 +1,28 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Polls', {
+    return queryInterface.createTable('PollCategories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      description: {
-        type: Sequelize.STRING
-      },
-      draft: {
-        type: Sequelize.BOOLEAN
-      },
-      userId: {
+      pollId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references:{
-          model:'Users',
-          key: 'id'
+          model:'Polls',
+          key: 'id',
         },
         onDelete: 'CASCADE'
       },
       categoryId: {
         type: Sequelize.INTEGER,
-        allowNull: true,
         references:{
           model:'Categories',
-          key: 'id'
+          key: 'id',
         },
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Polls');
+    return queryInterface.dropTable('PollCategories');
   }
 };

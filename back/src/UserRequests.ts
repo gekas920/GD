@@ -8,6 +8,7 @@ const ProfileController = require('./ProfileController');
 const UserController = require('./UserController');
 const PollsController = require('./PollsController');
 const ReportController = require('./ReportController');
+const CategoriesController = require('./CategoriesController');
 
 web.app.use('/drive',(req:express.Request,res:express.Response,next:express.NextFunction)=>{
     middleware.checkAccessToken(req,res,next)
@@ -97,9 +98,6 @@ web.app.put(drive+'/poll/update/:id',(req:express.Request,res:express.Response)=
     PollsController.create(req,res,req.params.id)
 });
 
-web.app.put(drive+'/poll/publish/:id',(req:express.Request,res:express.Response)=>{
-    PollsController.publish(req,res)
-});
 
 web.app.get(drive+'/poll/votes/:id',(req:express.Request,res:express.Response)=>{
    PollsController.preventVote(req,res)
@@ -131,4 +129,12 @@ web.app.get(drive+'/users/add',(req:express.Request,res:express.Response)=>{
 
 web.app.get(drive+'/poll/private/:id',(req:express.Request,res:express.Response)=>{
     PollsController.private(req,res)
+});
+
+web.app.get(drive+'/categories',(req:express.Request,res:express.Response)=>{
+    CategoriesController.get(req,res)
+});
+
+web.app.put(drive+'/poll/publish/:id',(req:express.Request,res:express.Response)=>{
+    PollsController.publish(req,res)
 });

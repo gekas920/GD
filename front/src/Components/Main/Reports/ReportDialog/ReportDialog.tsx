@@ -3,7 +3,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import {TextField} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
-import Requests from "../../../../Requests";
 import MenuItem from "@material-ui/core/MenuItem";
 import './ReportDialog.sass'
 import Tooltip from "@material-ui/core/Tooltip";

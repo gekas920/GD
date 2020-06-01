@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import MaterialTable, {Column} from "material-table";
-import Requests from "../../../Requests";
 import Dialog from "@material-ui/core/Dialog";
 import {ReportDialog} from "./ReportDialog/indexReportDialog";
 import {GetReports} from "./ReportListRequests";

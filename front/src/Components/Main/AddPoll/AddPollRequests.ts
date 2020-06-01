@@ -20,3 +20,8 @@ export const AddPollReq = (url:string,formData,options,draft) => async dispatch 
         })
     }
 };
+
+export const GetCategories = async (url: string) => {
+    let Categories = await Requests.get(url);
+    return Categories.data
+};

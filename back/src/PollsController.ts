@@ -1,11 +1,10 @@
 import {Request, Response} from "express";
 import {Field, Poll} from "./interfaces";
-
-const path = require('path');
 const db = require('../models');
 const Files = require('./FilesController');
 const fs = require('fs');
 const rimraf = require("rimraf");
+const CategoriesController = require('./CategoriesController');
 
 
 class PollsController{
@@ -130,32 +129,22 @@ class PollsController{
 
     public async create(request:Request,response: Response,id?:string){
         if(id){
-            let poll = await db.Poll.findOne({
-                where:{
-                    description:request.body.title
+            await db.Poll.destroy({
+                where: {
+                    id: id
                 }
             });
-            if(poll){
-                response.sendStatus(409);
-                return
-            }
-
-            else {
-                await db.Poll.destroy({
-                    where: {
-                        id: id
-                    }
-                });
-                let directory = __dirname + `/../PollsFiles/${id}`;
-                rimraf(directory, function () { console.log("done"); });
-            }
+            let directory = __dirname + `/../PollsFiles/${id}`;
+            rimraf(directory, function () { console.log("done"); });
         }
-        delete request.body.file;
+        if(request.body.file)
+            delete request.body.file;
         let body = request.body;
         let ids:number[];
         if(request.body.id){
             ids = JSON.parse(request.body.id);
         }
+        let types = JSON.parse(request.body.types);
         body = this.correctObj(body);
         let fields = this.clearFields(body);
         let poll = await db.Poll.findOrCreate({
@@ -170,6 +159,7 @@ class PollsController{
         }).then(([poll,created]:[any,boolean])=>{
             if(created){
                 let id = poll.dataValues.id;
+                CategoriesController.createPollCategory(types,id);
                 if(ids){
                     ids.forEach((elem:number)=>{
                         db.PrivateView.create({
@@ -217,7 +207,19 @@ class PollsController{
         })
     }
 
-    public async getPoll(request:Request,response:Response,id?:string){
+    public async getPoll(request:Request,response:Response){
+        let types = await db.PollCategory.findAll({
+            where:{
+                pollId:request.params.id
+            },
+            include:db.Category
+        });
+        let PollTypes = types.map((elem:any)=>{
+            return {
+                type:elem.dataValues.Category.dataValues.type
+            }
+        });
+        console.log(PollTypes);
         let Fields = await db.Field.findAll({
             where:{
                 pollId:request.params.id

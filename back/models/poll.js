@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'User',
         key: 'id'
       },
-    },
+    }
   }, {});
   Poll.associate = function(models) {
     Poll.belongsTo(models.User,{foreignKey:'userId',onDelete:'cascade'});

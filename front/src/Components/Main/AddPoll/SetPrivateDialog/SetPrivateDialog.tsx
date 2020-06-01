@@ -5,7 +5,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
-import Requests from "../../../../Requests";
 import {User} from "../../indexMain";
 import SendIcon from "@material-ui/icons/Send";
 import './SetPrivateDialog.sass'

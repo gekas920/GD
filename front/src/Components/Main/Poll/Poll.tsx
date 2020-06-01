@@ -12,7 +12,7 @@ import {EditPoll} from "../EditPoll/indexEditPoll";
 import {PropsPoll} from "./indexPoll";
 import {Report} from "../Report/indexReport";
 import {PollCarousel} from "./PollCarousel/indexCarousel";
-import {CheckPrivate, GetInfo, PollAction, UpdatePoll} from "./PollRequests";
+import {CheckPrivate, GetInfo, PollAction, PollDelete, UpdatePoll} from "./PollRequests";
 
 
 const pollAnswers = [
@@ -45,7 +45,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
     let id = idArr[idArr.length-1];
 
     const handleDelete = ()=>{
-        PollAction(`/poll/${props.clicked ||id}`);
+        PollDelete(`/poll/${props.clicked ||id}`);
     };
 
     const handlePublish = ()=>{
@@ -99,6 +99,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
         setAnswers(newPollAnswers);
         UpdatePoll(`/poll/${props.clicked || id}`,newPollAnswers);
     };
+
 
     let def = window.location.pathname.includes('my');
     const path = def ? 'none' : '';

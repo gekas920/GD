@@ -2,19 +2,19 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Reasons',[
+    return queryInterface.bulkInsert('Categories',[
       {
-        type:'Sexual content',
+        type:'Animals',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        type:'Invalid poll',
+        type:'Humour',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        type:'Advertisement',
+        type:'Choose right',
         createdAt: new Date(),
         updatedAt: new Date()
       },
