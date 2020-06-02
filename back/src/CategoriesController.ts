@@ -5,7 +5,7 @@ const db = require('../models');
 class CategoriesController {
     public async get(request: Request, response: Response){
         let Categories = await db.Category.findAll({
-            attributes:['type']
+            attributes:['id','type']
         });
         if(Categories)
             Categories = Categories.map((elem:any)=>{
@@ -31,6 +31,34 @@ class CategoriesController {
                 })
             })
         })
+    }
+
+    public async create(request: Request, response: Response){
+        await db.Category.findOrCreate({
+            where:{
+                type:request.body.type
+            },
+            defaults:{
+                type:request.body.type
+            }
+        }).then(([category,created]:[any,boolean])=>{
+            if(created)
+                response.send({id:category.dataValues.id});
+            else
+                response.send('Exist')
+        })
+    }
+    public async delete(request: Request, response: Response){
+        await db.Category.findOne({
+            where:{
+                id:request.params.id
+            }
+        })
+            .then((category:any)=>{
+                category.destroy();
+                response.sendStatus(200);
+            })
+            .catch(()=>response.sendStatus(500))
     }
 }
 

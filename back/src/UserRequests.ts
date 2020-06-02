@@ -138,3 +138,10 @@ web.app.get(drive+'/categories',(req:express.Request,res:express.Response)=>{
 web.app.put(drive+'/poll/publish/:id',(req:express.Request,res:express.Response)=>{
     PollsController.publish(req,res)
 });
+
+web.app.post(drive+'/category',(req:express.Request,res:express.Response)=>{
+    CategoriesController.create(req,res)
+});
+web.app.delete(drive+'/category/:id',(req:express.Request,res:express.Response)=>{
+    CategoriesController.delete(req,res)
+});

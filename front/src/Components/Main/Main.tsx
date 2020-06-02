@@ -3,7 +3,7 @@ import './Main.sass'
 import {comparePopular, compareUnpopular, Elem, MainProps} from "./indexMain";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {Button} from "@material-ui/core";
+import {Button, Dialog} from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
 import Tooltip from "@material-ui/core/Tooltip";
 import AssigmentIcon from '@material-ui/icons/Assistant'
@@ -12,6 +12,7 @@ import ReportList from "./Reports/ReportList";
 import {PollWindow} from "./PollWindow/indexPollWindow";
 import {AddPoll} from "./AddPoll/indexAddPoll";
 import {MainGet} from "./MainRequests";
+import {CategoriesList} from "./Categories/indexCategories";
 
 
 export const Main:React.FC<MainProps> = (props) =>{
@@ -19,6 +20,7 @@ export const Main:React.FC<MainProps> = (props) =>{
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [show,setShow] = useState(false);
     const [showRep,setShowReports] = useState(false);
+    const [open,setOpen] = useState(false);
 
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -77,8 +79,12 @@ export const Main:React.FC<MainProps> = (props) =>{
                     </button>
                 </Tooltip>
                 {showRep && <ReportList/>}
+                <Dialog open={open} onClose={()=>setOpen(false)}>
+                    <CategoriesList/>
+                </Dialog>
                 <Tooltip title="Categories" aria-label="add">
                     <button className='back-btn'
+                            onClick={()=>setOpen(true)}
                             style={{
                                 marginTop:'55vh'
                             }}>

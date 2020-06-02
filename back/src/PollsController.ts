@@ -219,7 +219,6 @@ class PollsController{
                 type:elem.dataValues.Category.dataValues.type
             }
         });
-        console.log(PollTypes);
         let Fields = await db.Field.findAll({
             where:{
                 pollId:request.params.id
@@ -253,7 +252,8 @@ class PollsController{
                 fields:FieldArr,
                 images:arr,
                 draft:Fields[0].dataValues.Poll.dataValues.draft,
-                name:Fields[0].dataValues.Poll.dataValues.User.initials
+                name:Fields[0].dataValues.Poll.dataValues.User.initials,
+                categories:PollTypes
             };
             response.send(poll);
         })

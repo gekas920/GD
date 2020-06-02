@@ -13,6 +13,7 @@ import {PropsPoll} from "./indexPoll";
 import {Report} from "../Report/indexReport";
 import {PollCarousel} from "./PollCarousel/indexCarousel";
 import {CheckPrivate, GetInfo, PollAction, PollDelete, UpdatePoll} from "./PollRequests";
+import {Elem} from "../Categories/indexCategories";
 
 
 const pollAnswers = [
@@ -39,6 +40,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
     const [open,setOpen] = useState(false);
     const [name,setName] = useState('');
     const [privatePoll,setPrivate] = useState(false);
+    const [categories,setCategories] = useState([]);
 
 
     let idArr = window.location.pathname.split('/');
@@ -74,6 +76,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
                 setQuestion(result.title);
                 setImages(result.images);
                 setName(result.name);
+                setCategories(result.categories);
                 let fields = result.fields.map(elem=>{
                     let obj = Object.assign({},elem);
                     delete obj.correct;
@@ -100,6 +103,21 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
         UpdatePoll(`/poll/${props.clicked || id}`,newPollAnswers);
     };
 
+    const getCategories = ()=>{
+        if(categories)
+            return <div style={{
+                position:'relative',
+                color:"white",
+                fontStyle:'italic',
+                display:'flex',
+                justifyContent:'center',
+                marginBottom:'10px'
+            }}>Categories :
+                {categories.map((elem:Elem)=>{
+                    return <div style={{marginRight:'5px',marginLeft:'5px'}}>{elem.type}</div>
+                })}
+            </div>
+    };
 
     let def = window.location.pathname.includes('my');
     const path = def ? 'none' : '';
@@ -134,6 +152,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
                               noStorage={true}
                               customStyles = {pollStyles}
                         />
+                        {getCategories()}
                         {privatePoll &&
                         <div style={{
                             color:"white",

@@ -9,5 +9,6 @@ export interface Poll {
     fields:Field[] | Field,
     images:string | string[] | void,
     draft:boolean,
-    name:string
+    name:string,
+    categories:string[]
 }
