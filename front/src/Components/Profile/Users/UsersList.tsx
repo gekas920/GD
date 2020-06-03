@@ -4,7 +4,7 @@ import {useEffect} from 'react'
 import MaterialTable, { Column } from 'material-table';
 import Dialog from '@material-ui/core/Dialog';
 import {Profile} from "../indexProfile";
-import {GetUsers} from "./UsersListRequests";
+import {UsersListProps} from "./indexUsersList";
 
 interface Row {
     initials:string
@@ -16,7 +16,7 @@ interface TableState {
     data: Row[];
 }
 
-export const Users =()=> {
+export const Users:React.FC<UsersListProps>=(props)=> {
     const [state, setState] = React.useState<TableState>({
         columns: [
             { title: 'Initials', field: 'initials' },
@@ -36,19 +36,19 @@ export const Users =()=> {
     };
 
 
+    useEffect(()=>{
+        props.SendData('/users');
+    },[]);
 
     useEffect(()=>{
-        GetUsers('/users')
-            .then(result=>{
-                setState({
-                    columns: [
-                        { title: 'Initials', field: 'initials' },
-                        { title: 'Deleted', field: 'deleted' }
-                    ],
-                    data: result
-                })
-            })
-    },[]);
+        setState({
+            columns: [
+                { title: 'Initials', field: 'initials' },
+                { title: 'Deleted', field: 'deleted' }
+            ],
+            data: props.usersList
+        })
+    },[props.usersList]);
 
     return(
         <div className='companies-info-box'>

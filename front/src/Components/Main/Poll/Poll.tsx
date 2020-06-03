@@ -152,7 +152,7 @@ export const Polls:React.FC<PropsPoll> = (props)=>{
                               noStorage={true}
                               customStyles = {pollStyles}
                         />
-                        {getCategories()}
+                        {categories.length && getCategories()}
                         {privatePoll &&
                         <div style={{
                             color:"white",

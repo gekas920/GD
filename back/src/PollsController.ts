@@ -8,7 +8,7 @@ const CategoriesController = require('./CategoriesController');
 
 
 class PollsController{
-    private comparePolls = (a:any, b:any)=> {
+    public comparePolls = (a:any, b:any)=> {
         const A = parseInt(a.dataValues.pollId);
         const B = parseInt(b.dataValues.pollId);
 
@@ -20,7 +20,7 @@ class PollsController{
         }
         return comparison;
     };
-    private getVoices(arr:any[]){
+    public getVoices(arr:any[]){
         arr.sort(this.comparePolls);
         let pollId = arr[0].dataValues.pollId;
         let res: number[] = [];

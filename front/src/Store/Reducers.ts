@@ -6,7 +6,8 @@ export const appState:AppState = {
     clicked:0,
     show:false,
     ids:[],
-    existError:false
+    existError:false,
+    usersList:[]
 };
 
 export function snackReducer(state = appState, action:Action) {
@@ -76,6 +77,25 @@ export function setEx(state = appState,action:Action) {
         return {
             ...state,
             existError: false
+        }
+    }
+    return state
+}
+
+export function setUsers(state = appState,action:Action) {
+    if(action.type === 'ADD_USERS'){
+        return{
+            ...state,
+            usersList: action.payload
+        }
+    }
+    if(action.type === 'DELETE_USER'){
+        let arr = state.usersList.filter((elem)=>{
+            return elem.id.toString() !== action.payload
+        });
+        return {
+            ...state,
+            usersList: arr
         }
     }
     return state

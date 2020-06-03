@@ -23,6 +23,7 @@ export const Profile:React.FC<ProfileProps> = (props) => {
         admin:props.admin
     });
     const [show,showBlock] = useState(false);
+    const [disabled,setDisabled]=useState(false);
     const showElem = ()=>{
         showBlock(prevState => !prevState);
     };
@@ -43,7 +44,9 @@ export const Profile:React.FC<ProfileProps> = (props) => {
     const deleteVariables = (variable:boolean)=>{
         let id = props.url.split('/')[2];
         if(variable){
-            props.DeleteUser(`/profile/forever/${id}`)
+            props.DeleteUserStore(id);
+            props.DeleteUser(`/profile/forever/${id}`);
+            setDisabled(true)
         }
         else {
             props.DeleteUser(`/profile/delete/${id}`);
@@ -130,25 +133,25 @@ export const Profile:React.FC<ProfileProps> = (props) => {
                     {inputForm('initials')}
                     {inputForm('date')}
                     {inputForm('about')}
-                    <button type="submit">Confirm changes</button>
+                    <button type="submit" disabled={disabled}>Confirm changes</button>
                     {props.url === '/profile' && <button onClick={handleClick}>Log out</button>}
                 </form>
                 {props.url !== '/profile' &&
                 <div>
                     <div className='delete-block'>
                         <button className='delete-button'
-                                disabled = {data.admin}
+                                disabled = {data.admin || disabled}
                                 onClick={()=>deleteVariables(true)}>
                             <DeleteForever/>
                         </button>
                         <button className='delete-button'
-                                disabled = {data.admin}
+                                disabled = {data.admin || disabled}
                                 onClick={()=>deleteVariables(false)}>
                             <DeleteIcon/>
                         </button>
                     </div>
                     <button className='remove-button'
-                            disabled = {data.admin}
+                            disabled = {data.admin || disabled}
                             onClick={goBack}>
                         <Replay/>
                     </button>

@@ -1,7 +1,10 @@
 import Requests from "../../../Requests";
 
 
-export const GetUsers = async (url) => {
+export const GetUsers =  (url) => async dispatch=>{
     let Result = await Requests.get(url);
-    return Result.data
+    dispatch({
+        type:'ADD_USERS',
+        payload:Result.data
+    })
 };

@@ -1,10 +1,17 @@
+interface User {
+    id:string,
+    name:string,
+    deleted:boolean
+}
+
 export interface AppState {
     showSnack:boolean,
     admin:boolean,
     clicked:number,
     show:boolean,
     ids:number[],
-    existError:boolean
+    existError:boolean,
+    usersList:User[]
 }
 
 
@@ -16,6 +23,8 @@ const SET_SHOW = 'SET_CLICK';
 const SET_ID = 'SET_ID';
 const SET_EX = 'SET_EX';
 const HIDE_EX= 'HIDE_EX';
+const ADD_USERS = 'ADD_USERS';
+const DELETE_USER = 'DELETE_USER';
 interface ShowSnack {
     type: typeof SHOW_SNACK
 }
@@ -47,4 +56,14 @@ interface HideEx {
     type:typeof HIDE_EX
 }
 
-export type Action = ShowSnack | HideSnack | SetAdmin | SetPoll | SetShow | SetId | SetEx | HideEx
+interface AddUsers {
+    type: typeof ADD_USERS,
+    payload:[]
+}
+
+interface DeleteUser {
+    type: typeof DELETE_USER,
+    payload:string|number
+}
+
+export type Action = ShowSnack | HideSnack | SetAdmin | SetPoll | SetShow | SetId | SetEx | HideEx | AddUsers | DeleteUser

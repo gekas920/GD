@@ -145,3 +145,7 @@ web.app.post(drive+'/category',(req:express.Request,res:express.Response)=>{
 web.app.delete(drive+'/category/:id',(req:express.Request,res:express.Response)=>{
     CategoriesController.delete(req,res)
 });
+
+web.app.get(drive+'/category/:id',(req:express.Request,res:express.Response)=>{
+    CategoriesController.getPolls(req,res)
+})

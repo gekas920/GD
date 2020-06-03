@@ -12,6 +12,7 @@ export interface userData {
 export interface ProfileProps {
     UpdateInfo:(url:string,body?)=>void,
     DeleteUser:(url:string)=>void,
+    DeleteUserStore:(payload:string)=>void,
     admin:boolean,
     url:string
 }
@@ -22,6 +23,12 @@ const mapDispatchToProps = (dispatch)=> ({
     },
     DeleteUser:(url)=>{
         dispatch(DeleteUserInfo(url))
+    },
+    DeleteUserStore : (payload)=>{
+        dispatch({
+            type:'DELETE_USER',
+            payload:payload
+        })
     }
 });
 
